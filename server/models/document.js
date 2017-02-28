@@ -1,11 +1,11 @@
 'use strict';
-module.exports = function(sequelize, DataTypes) {
+module.exports = (sequelize, DataTypes) => {
   var Document = sequelize.define('Document', {
     title: DataTypes.STRING,
     content: DataTypes.STRING
   }, {
     classMethods: {
-      associate: function(models) {
+      associate: (models) => {
         // associations can be defined here
         Document.belongsTo(models.User, {
           foreignKey: 'userId',
