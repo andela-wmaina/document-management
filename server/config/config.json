@@ -1,6 +1,5 @@
 {
   "development": {
-    "secret": "DATABASE_SECRET",
     "use_env_variable": "DATABASE_URL"
   },
   "test": {
