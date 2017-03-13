@@ -8,11 +8,9 @@ Router.route('/users')
   .post(User.create)
   .get(User.list);
 
-Router.use(User.middleware);
-
 Router.route('/users/:id')
-  .get(User.find)
-  .put(User.update)
-  .delete(User.delete);
+	.delete(User.delete)
+	.get(User.find)
+	.put(User.update);
 
 module.exports.UserRouter = Router;

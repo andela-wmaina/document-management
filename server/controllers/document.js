@@ -7,9 +7,11 @@ class DocumentController {
       .create({
         title: req.body.title,
         content: req.body.content,
-        userId: req.user.id
+        userId: req.body.userId
       })
-      .then(document => res.status(201).send(document))
+      .then(document => res.status(201).send({
+        message: "Successful entry",
+        document: document}))
       .catch(error => res.status(400).send(error));
   }
 
@@ -22,7 +24,7 @@ class DocumentController {
 
   find(req, res) {
     return Document
-      .findById(req.params.documentId)
+      .findById(req.params.id)
       .then(document => {
         if (!document) {
           return res.status(404).send({
@@ -36,24 +38,26 @@ class DocumentController {
 
   update(req, res) {
     return Document
-      .findById(req.params.documentId)
+      .findById(req.params.id)
       .then(document => {
         if (!document) {
           return res.status(404).send({
             message: 'Document Not Found',
           });
         }
-        if (document.userId != req.user.id) {
-          return res.json({
-            message: 'You do not have the permission to edit this document'
-          });
-        }
-        console.log(req.body.title);
+        // if (document.userId != req.user.id) {
+        //   return res.json({
+        //     message: 'You do not have the permission to edit this document'
+        //   });
+        // }
         return document
           .update({
             title: req.body.title || document.title,
           })
-          .then(() => res.status(200).send(document))
+          .then(() => res.status(200).send({
+            message: "Succesful Update",
+            document: document
+          }))
           .catch((error) => res.status(400).send(error));
       })
       .catch((error) => res.status(400).send(error));
@@ -61,19 +65,19 @@ class DocumentController {
 
   delete(req, res) {
     return Document
-      .findById(req.params.documentId)
+      .findById(req.params.id)
       .then(document => {
         if (!document) {
           return res.status(404).send({
             message: 'Document Not Found',
           });
         }
-        console.log(req.user)
-        if (document.userId != req.user.id && req.user.roleId != 1) {
-          return res.json({
-            message: 'You do not have the permission to edit this document'
-          });
-        }
+        // console.log(req.user)
+        // if (document.userId != req.user.id && req.user.roleId != 1) {
+        //   return res.json({
+        //     message: 'You do not have the permission to edit this document'
+        //   });
+        // }
         return document
           .destroy()
           .then(() => res.status(200).send({ message: 'Deleted' }))

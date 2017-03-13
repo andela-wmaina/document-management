@@ -1,8 +1,8 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
-  var Document = sequelize.define('Document', {
-    title: DataTypes.STRING,
-    content: DataTypes.STRING
+module.exports = (Sequelize, DataTypes) => {
+  const Document = Sequelize.define('Document', {
+    title: { type: DataTypes.STRING },
+    content: { type: DataTypes.STRING }
   }, {
     classMethods: {
       associate: (models) => {

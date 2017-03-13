@@ -2,16 +2,27 @@ const User = require('../models').User;
 const jwt = require('jsonwebtoken');
 const express = require('express');
 const app = express();
+const bcrypt = require('bcrypt');
 const secretTokenKey = process.env.SECRET_TOKEN_KEY;
+
 const createToken = (user) => {
   return jwt.sign(user, secretTokenKey);
 }
-module.exports = {
+
+// Generate a salt
+const salt = bcrypt.genSaltSync();
+// Hash the password with the salt
+const GenerateHash = (password) => {
+  return bcrypt.hashSync(password, salt);
+} 
+
+class UserController {
   create(req, res) {
+
     return User.create({
         username: req.body.username,
         email: req.body.email,
-        password: req.body.password,
+        password: GenerateHash(req.body.password),
         roleId: req.body.role
       })
       .then((user) => {
@@ -19,13 +30,23 @@ module.exports = {
         const token = createToken(userInfo);
 
         res.status(200).json({
-          message: 'Here is your token:',
+          message: 'Successful registration',
           token: token,
           userDetails: user
         });
       })
       .catch(error => res.status(400).send(error));
-  },
+  }
+
+   testCreate(data) {
+
+    return User.create(data)
+      .then((user) => {
+        const userInfo = { _id: user.id }
+        const token = createToken(userInfo);
+      })
+      .catch(error => error);
+  }
 
   login(req, res) {
     return User
@@ -43,7 +64,9 @@ module.exports = {
             })
         }
 
-        if (user.password != req.body.password) {
+        const password = bcrypt.compareSync(req.body.password, user.password); // true
+
+        if (!password) {
           return res.send('Password does not match');
         }
 
@@ -52,13 +75,13 @@ module.exports = {
 
         res.status(200)
           .json({
-            success: true,
+            message: 'Successful login',
             token,
             user
           });
       })
       .catch(error => res.status(400).send(error));
-  },
+  }
 
   // logout(req, res) {
   //  return req.logout();
@@ -92,14 +115,14 @@ module.exports = {
           next()
         });
     });
-  },
+  }
 
   list(req, res) {
     return User
       .all()
       .then(user => res.status(200).send(user))
       .catch(error => res.status(400).send(error));
-  },
+  }
 
   find(req, res) {
     return User
@@ -113,7 +136,7 @@ module.exports = {
         return res.status(200).send(user);
       })
       .catch(error => res.status(400).send(error));
-  },
+  }
 
   update(req, res) {
     return User
@@ -126,19 +149,21 @@ module.exports = {
         }
         return user
           .update({
-            title: req.body.title || user.title,
+            email: req.body.email || user.email,
           })
-          .then(() => res.status(200).send(user))
+          .then(() => res.status(200).send({
+          message: "Successful Update",
+          user: user
+        }))
           .catch((error) => res.status(400).send(error));
       })
       .catch((error) => res.status(400).send(error));
-  },
+  }
 
   delete(req, res) {
     return User
       .findById(req.params.id)
       .then(user => {
-        console.log(user);
         if (!user) {
           return res.status(404).send({
             message: 'user Not Found',
@@ -150,5 +175,7 @@ module.exports = {
           .catch((error) => res.status(400).send(error));
       })
       .catch((error) => res.status(400).send(error));
-  },
+  }
 };
+
+module.exports = new UserController();
