@@ -12,22 +12,23 @@ const createToken = (user) => {
 // Generate a salt
 const salt = bcrypt.genSaltSync();
 // Hash the password with the salt
-const GenerateHash = (password) => {
+const generateHash = (password) => {
   return bcrypt.hashSync(password, salt);
 } 
 
 class UserController {
-  create(req, res) {
 
+  create(req, res) {
     return User.create({
         username: req.body.username,
         email: req.body.email,
-        password: GenerateHash(req.body.password),
+        password: generateHash(req.body.password),
         roleId: req.body.role
       })
       .then((user) => {
         const userInfo = { _id: user.id }
         const token = createToken(userInfo);
+        
 
         res.status(200).json({
           message: 'Successful registration',
@@ -36,16 +37,6 @@ class UserController {
         });
       })
       .catch(error => res.status(400).send(error));
-  }
-
-   testCreate(data) {
-
-    return User.create(data)
-      .then((user) => {
-        const userInfo = { _id: user.id }
-        const token = createToken(userInfo);
-      })
-      .catch(error => error);
   }
 
   login(req, res) {
@@ -97,14 +88,14 @@ class UserController {
       });
     }
 
-    jwt.verify(token, 'secretTokenKey', (error, decoded) => {
+    jwt.verify(token, secretTokenKey, (error, decoded) => {
       if (error) {
         return res.json({
           success: false,
           message: 'Failed to authenticate token'
         });
       }
-      // TODO fetch the user from the db using the decoded id.
+
       User
         .findById(decoded._id)
         .then(user => {
@@ -173,6 +164,28 @@ class UserController {
           .destroy()
           .then(() => res.status(200).send({ message: 'Deleted' }))
           .catch((error) => res.status(400).send(error));
+      })
+      .catch((error) => res.status(400).send(error));
+  }
+
+  pagination(req, res) {
+    return User
+      .findAll({
+        where: {
+          limit: req.params.limit,
+          offset: req.params.offset
+        }
+      })
+      .then(user => {
+        if (!user) {
+          return res.status(404).send({
+            message: 'No Users'
+          })
+        }
+        res.status(200).send({
+          message: "Successful",
+          users: user
+        })
       })
       .catch((error) => res.status(400).send(error));
   }

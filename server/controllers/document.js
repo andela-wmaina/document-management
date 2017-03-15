@@ -86,5 +86,27 @@ class DocumentController {
       .catch((error) => res.status(400).send(error));
   }
 
+  pagination(req, res) {
+    return Document
+      .findAll({
+        where: {
+          limit: req.params.limit,
+          offset: req.params.offset
+        }
+      })
+      .then(document => {
+        if (!document) {
+          return res.status(404).send({
+            message: 'No Documents'
+          })
+        }
+        res.status(200).send({
+          message: "Successful",
+          documents: document
+        })
+      })
+      .catch((error) => res.status(400).send(error));
+  }
+
 };
 module.exports = new DocumentController();
