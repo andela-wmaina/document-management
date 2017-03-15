@@ -6,11 +6,18 @@ Router.route('/users/login')
 
 Router.route('/users')
   .post(User.create)
-  .get(User.list);
+
+Router.use(User.middleware)
+
+Router.route('/users')
+	.get(User.list);
 
 Router.route('/users/:id')
 	.delete(User.delete)
 	.get(User.find)
 	.put(User.update);
+
+Router.route('/users/?limit={integer}&offset={integer}')
+	.get(User.pagination)
 
 module.exports.UserRouter = Router;
