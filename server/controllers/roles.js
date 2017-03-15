@@ -3,9 +3,9 @@ const Roles = require('../models').Role;
 class RolesController {
   create(req, res) {
     return Roles.create({
-        name: req.body.name,
+        name: req.body.name
       })
-      .then(roles => res.status(201).send({
+      .then(role => res.status(201).send({
         message: "Successful entry",
         role: role
       }))
@@ -15,7 +15,7 @@ class RolesController {
   list(req, res) {
   return Roles
     .all()
-    .then(roles => res.status(200).send(roles))
+    .then(role => res.status(200).send(role))
     .catch(error => res.status(400).send(error));
   }
 };
