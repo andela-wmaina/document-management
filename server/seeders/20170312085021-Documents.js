@@ -11,7 +11,8 @@ module.exports = {
         {
           title: 'The art of being',
           content: "A person who has not been completely alienated",
-          userId: '344',
+          access: 'private',
+          userId: 1,
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -19,7 +20,8 @@ module.exports = {
           title: 'Knowledge',
           content: "There is no wealth like knowledge,\
           and no poverty like ignorance. - Buddha",
-          userId: '345',
+          access: 'private',
+          userId: 2,
           createdAt: new Date(),
           updatedAt: new Date()
         }]

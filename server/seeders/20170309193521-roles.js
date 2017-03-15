@@ -11,7 +11,7 @@ module.exports = {
         {name: 'ADMIN', createdAt: new Date(), updatedAt: new Date()},
         {name: 'Users', createdAt: new Date(), updatedAt: new Date()}
         ]
-        );
+      );
     },
 
   down: function (queryInterface, Sequelize) {
