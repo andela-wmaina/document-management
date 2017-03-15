@@ -6,11 +6,11 @@
   "author": "Warenga <warenga.maina@andela.com>",
   "license": "MIT",
   "scripts": {
-    "start": "SET NODE_ENV=dev && node server.js",
-    "test": "./node_modules/mocha/bin/mocha server/tests --timeout 20000",
+    "start": "NODE_ENV=development && node server.js",
+    "test": "npm run seed && ./node_modules/mocha/bin/mocha server/tests --timeout 20000",
     "start:dev": "nodemon server.js",
     "migrate":"sequelize db:migrate:undo:all && sequelize db:migrate",
-    "seed":" npm run migrate && sequelize db:seed:all"
+    "seed": "npm run migrate && sequelize db:seed:all"
   },
   "dependencies": {
     "bcrypt": "^1.0.2",
