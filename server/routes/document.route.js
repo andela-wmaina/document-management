@@ -6,11 +6,8 @@ Router.route('/documents')
   .get(Document.list);
 
 Router.route('/documents/:id')
-	.delete(Document.delete)
-	.get(Document.find)
-	.put(Document.update);
-
-Router.route('/documents/?limit={integer}&offset={integer}')
-	.get(Document.pagination)
+  .delete(Document.delete)
+  .get(Document.find)
+  .put(Document.update);
 
 module.exports.DocumentRouter = Router;

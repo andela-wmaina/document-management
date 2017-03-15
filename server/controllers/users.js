@@ -14,7 +14,7 @@ const salt = bcrypt.genSaltSync();
 // Hash the password with the salt
 const generateHash = (password) => {
   return bcrypt.hashSync(password, salt);
-} 
+}
 
 class UserController {
 
@@ -28,7 +28,7 @@ class UserController {
       .then((user) => {
         const userInfo = { _id: user.id }
         const token = createToken(userInfo);
-        
+
 
         res.status(200).json({
           message: 'Successful registration',
@@ -109,6 +109,30 @@ class UserController {
   }
 
   list(req, res) {
+    console.log(req.query)
+
+    if (req.query.limit || req.query.offset) {
+
+      return User
+        .findAll({
+
+          limit: req.query.limit,
+          offset: req.query.offset
+
+        })
+        .then(user => {
+          if (!user) {
+            return res.status(404).send({
+              message: 'No Users'
+            })
+          }
+          res.status(200).send(user)
+        })
+        .catch((error) => res.status(400).send(error));
+    }
+
+
+
     return User
       .all()
       .then(user => res.status(200).send(user))
@@ -143,9 +167,9 @@ class UserController {
             email: req.body.email || user.email,
           })
           .then(() => res.status(200).send({
-          message: "Successful Update",
-          user: user
-        }))
+            message: "Successful Update",
+            user: user
+          }))
           .catch((error) => res.status(400).send(error));
       })
       .catch((error) => res.status(400).send(error));
@@ -167,28 +191,7 @@ class UserController {
       })
       .catch((error) => res.status(400).send(error));
   }
+}
 
-  pagination(req, res) {
-    return User
-      .findAll({
-        where: {
-          limit: req.params.limit,
-          offset: req.params.offset
-        }
-      })
-      .then(user => {
-        if (!user) {
-          return res.status(404).send({
-            message: 'No Users'
-          })
-        }
-        res.status(200).send({
-          message: "Successful",
-          users: user
-        })
-      })
-      .catch((error) => res.status(400).send(error));
-  }
-};
 
 module.exports = new UserController();
