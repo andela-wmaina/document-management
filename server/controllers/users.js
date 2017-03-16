@@ -1,42 +1,39 @@
 const User = require('../models').User;
 const jwt = require('jsonwebtoken');
-const express = require('express');
-const app = express();
 const bcrypt = require('bcrypt');
 const secretTokenKey = process.env.SECRET_TOKEN_KEY;
+// Generate a salt
+const salt = bcrypt.genSaltSync();
 
 const createToken = (user) => {
   return jwt.sign(user, secretTokenKey);
 }
 
-// Generate a salt
-const salt = bcrypt.genSaltSync();
 // Hash the password with the salt
 const generateHash = (password) => {
   return bcrypt.hashSync(password, salt);
 }
 
 class UserController {
-
   create(req, res) {
     return User.create({
-        username: req.body.username,
-        email: req.body.email,
-        password: generateHash(req.body.password),
-        roleId: req.body.role
-      })
+      username: req.body.username,
+      email: req.body.email,
+      password: GenerateHash(req.body.password),
+      roleId: req.body.role
+    })
       .then((user) => {
-        const userInfo = { _id: user.id }
+        const userInfo = { _id: user.id };
         const token = createToken(userInfo);
-
-
         res.status(200).json({
           message: 'Successful registration',
-          token: token,
+          token,
           userDetails: user
         });
       })
-      .catch(error => res.status(400).send(error));
+      .catch((error) => {
+        res.status(400).send(error);
+      });
   }
 
   login(req, res) {
@@ -52,16 +49,16 @@ class UserController {
             .json({
               success: false,
               error: 'User not found'
-            })
+            });
         }
 
         const password = bcrypt.compareSync(req.body.password, user.password); // true
 
         if (!password) {
-          return res.send('Password does not match');
+          return res.json('Password does not match');
         }
 
-        const userInfo = { _id: user.id }
+        const userInfo = { _id: user.id };
         const token = createToken(userInfo);
 
         res.status(200)
@@ -71,7 +68,9 @@ class UserController {
             user
           });
       })
-      .catch(error => res.status(400).send(error));
+      .catch((error) => {
+        res.status(400).send(error);
+      });
   }
 
   // logout(req, res) {
@@ -82,7 +81,7 @@ class UserController {
     const token = req.query.token || req.headers['x-access-token'];
 
     if (!token) {
-      return res.status(403).send({
+      return res.status(403).json({
         success: false,
         message: 'No token provided'
       });
@@ -98,67 +97,67 @@ class UserController {
 
       User
         .findById(decoded._id)
-        .then(user => {
+        .then((user) => {
           if (!user) {
-            return 'User Not Found'
+            return 'User Not Found';
           }
-          req.user = user
-          next()
+          req.user = user;
+          next();
         });
     });
   }
 
   list(req, res) {
-    console.log(req.query)
-
     if (req.query.limit || req.query.offset) {
-
       return User
         .findAll({
-
           limit: req.query.limit,
           offset: req.query.offset
-
         })
-        .then(user => {
+        .then((user) => {
           if (!user) {
-            return res.status(404).send({
+            return res.status(404).json({
               message: 'No Users'
-            })
+            });
           }
-          res.status(200).send(user)
+          res.status(200).json(user);
         })
-        .catch((error) => res.status(400).send(error));
+        .catch((error) => {
+          res.status(400).send(error);
+        });
     }
-
-
-
     return User
       .all()
-      .then(user => res.status(200).send(user))
-      .catch(error => res.status(400).send(error));
+      .then((user) => {
+        res.status(200).json(user);
+      })
+      .catch((error) => {
+        res.status(400).send(error);
+      });
   }
 
   find(req, res) {
     return User
       .findById(req.params.id)
-      .then(user => {
+      .then((user) => {
         if (!user) {
-          return res.status(404).send({
+          return res.status(404).json({
             message: 'user Not Found',
           });
         }
-        return res.status(200).send(user);
+        return res.status(200).json(user);
       })
-      .catch(error => res.status(400).send(error));
+      .catch((error) => {
+        res.status(400).send(error);
+      });
   }
 
   update(req, res) {
     return User
       .findById(req.params.id)
-      .then(user => {
+      .then((user) => {
         if (!user) {
-          return res.status(404).send({
+          return res.status(404).json({
             message: 'user Not Found',
           });
         }
@@ -166,32 +165,59 @@ class UserController {
           .update({
             email: req.body.email || user.email,
           })
-          .then(() => res.status(200).send({
-            message: "Successful Update",
-            user: user
+          .then(() => res.status(200).json({
+            message: 'Successful Update',
+            user
           }))
-          .catch((error) => res.status(400).send(error));
+          .catch((error) => {
+            res.status(400).json(error);
+          });
       })
-      .catch((error) => res.status(400).send(error));
+      .catch((error) => {
+        res.status(400).send(error);
+      });
   }
 
   delete(req, res) {
     return User
       .findById(req.params.id)
-      .then(user => {
+      .then((user) => {
         if (!user) {
-          return res.status(404).send({
+          return res.status(404).json({
             message: 'user Not Found',
           });
         }
         return user
           .destroy()
-          .then(() => res.status(200).send({ message: 'Deleted' }))
-          .catch((error) => res.status(400).send(error));
+          .then(() => res.status(200).json({ message: 'Deleted' }))
+          .catch((error) => {
+            res.status(400).json(error);
+          });
       })
-      .catch((error) => res.status(400).send(error));
+      .catch((error) => {
+        res.status(400).send(error);
+      });
+  }
+
+  findByName(req, res) {
+    return User
+      .findAll({
+        where: {
+          username: req.query.username
+        }
+      })
+      .then((user) => {
+        if (user.length === 0) {
+          return res.status(404).json({
+            message: 'User Not Found',
+          });
+        }
+        return res.status(200).json(user);
+      })
+      .catch((error) => {
+        res.status(400).send(error);
+      });
   }
 }
-
 
 module.exports = new UserController();

@@ -10,4 +10,7 @@ Router.route('/documents/:id')
   .get(Document.find)
   .put(Document.update);
 
+Router.route('/search/documents')
+  .get(Document.findByName);
+
 module.exports.DocumentRouter = Router;
