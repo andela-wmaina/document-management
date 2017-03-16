@@ -1,6 +1,7 @@
 const Document = require('../models').Document;
 
 class DocumentController {
+
   create(req, res) {
     return Document
       .create({
@@ -8,6 +9,7 @@ class DocumentController {
         content: req.body.content,
         userId: req.body.userId
       })
+
       .then((document) => {
         res.status(201).send({
           message: 'Successful entry',

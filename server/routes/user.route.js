@@ -6,6 +6,15 @@ Router.route('/users/login')
 
 Router.route('/users')
   .post(User.create)
+
+Router.use(User.middleware)
+
+// Router.route('/users/?limit={integer}&offset={integer}')
+//   .get(User.pagination)
+
+
+
+Router.route('/users')
   .get(User.list);
 
 Router.use(User.middleware);
