@@ -6,8 +6,11 @@ Router.route('/documents')
   .get(Document.list);
 
 Router.route('/Documents/:id')
-	.delete(Document.delete)
-	.get(Document.find)
-	.put(Document.update);
+  .delete(Document.delete)
+  .get(Document.find)
+  .put(Document.update);
+
+Router.route('/search/documents')
+  .get(Document.findByName);
 
 module.exports.DocumentRouter = Router;
