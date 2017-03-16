@@ -25,5 +25,4 @@ app.listen(port, (eror) => {
 	}
 	console.log(`Server running on port ${port} on ${app.get('env')} mode`)
 });
-
 module.exports = app; 
