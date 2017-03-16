@@ -49,7 +49,7 @@ describe('roles', () => {
         });
     });
   });
-    /*
+  /*
    * Test the /POST route
    */
   describe('/POST role', () => {
