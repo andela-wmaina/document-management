@@ -2,6 +2,7 @@ const Document = require('../models').Document;
 const User = require('../models').User;
 
 class DocumentController {
+
   create(req, res) {
     return Document
       .create({
@@ -11,11 +12,32 @@ class DocumentController {
       })
       .then(document => res.status(201).send({
         message: "Successful entry",
-        document: document}))
+        document
+      }))
       .catch(error => res.status(400).send(error));
   }
 
   list(req, res) {
+    if (req.query.limit || req.query.offset) {
+
+      return Document
+        .findAll({
+
+          limit: req.query.limit,
+          offset: req.query.offset
+
+        })
+        .then(document => {
+          if (!document) {
+            return res.status(404).send({
+              message: 'No Users'
+            })
+          }
+          res.status(200).send(document)
+        })
+        .catch((error) => res.status(400).send(error));
+    }
+
     return Document
       .all()
       .then(document => res.status(200).send(document))
