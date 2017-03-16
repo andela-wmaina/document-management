@@ -1,34 +1,29 @@
 //During the test the env variable is set to test
 process.env.NODE_ENV = 'test';
 
-let Sequelize = require('sequelize');
-let documentModel = require('../models').Document;
-
 //Require the dev-dependencies
-let chai = require('chai');
-let chaiHttp = require('chai-http');
-let server = require('../../server');
-let should = chai.should();
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const server = require('../../server');
+const should = chai.should();
 
 chai.use(chaiHttp);
 
 let token;
 //Our parent block
 describe('documents', () => {
-
   before((done) => {
     const admin = {
       username: 'Peter',
       password: 'peter'
-    }
-
+    };
     chai.request(server)
       .post('/api/users/login')
       .send(admin)
       .end((err, res) => {
-        token = res.body.token
-        done()
-      })
+        token = res.body.token;
+        done();
+      });
   });
 
   /*
@@ -52,11 +47,11 @@ describe('documents', () => {
    */
   describe('/POST document', () => {
     it('it should POST a document', (done) => {
-      let document = {
-        title: "Blue Sky",
+      const document = {
+        title: 'Blue Sky',
         content: 'Why is the sky blue? Why did He create it to be blue?',
         userId: 2
-      }
+      };
       chai.request(server)
         .post('/api/documents')
         .set('x-access-token', token)
@@ -99,11 +94,10 @@ describe('documents', () => {
   });
 
   describe('/PUT/:id document', (done) => {
-
     it('it should UPDATE a document given the id', () => {
-      let document = {
-        title: "Who Doc",
-      }
+      const document = {
+        title: 'Who Doc',
+      };
       chai.request(server)
         .put('api/documents/2')
         .set('x-access-token', token)
@@ -135,19 +129,30 @@ describe('documents', () => {
     });
   });
 
-  describe('/GET/ pagination for documents', () => {
-    it('it should return fetch number of documents specified in integer \
-      and skip number of documents specified in offset', (done) => {
-        chai.request(server)
-          .get('api/documents/?limit=2&offset=2')
-          .set('x-access-token', token)
-          .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a(object);
-            res.body.should.have.property('message')/eql('Successful');
-            done()
-          });
-      });
+  describe('/GET/?limit={integer}?offset={integer} pagination for documents', () => {
+    it('it should GET documents based on query', (done) => {
+      chai.request(server)
+        .get('api/documents/?limit=1&offset=1')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
   });
 
+  describe('/GET/?title search documents', () => {
+    it('it should GET a document by the given title', (done) => {
+      chai.request(server)
+        .get('api/search/documents/?title=Knowledge')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body[0].should.have.property('title').eql('Knowledge');
+          done();
+        });
+    });
+  });
 });

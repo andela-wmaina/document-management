@@ -1,37 +1,29 @@
 //During the test the env variable is set to test
 process.env.NODE_ENV = 'test';
 
-let Sequelize = require('sequelize');
-let UserModel = require('../models').User;
-const { User } = require('../controllers');
-const jwt = require('jsonwebtoken');
-
 //Require the dev-dependencies
-let chai = require('chai');
-let chaiHttp = require('chai-http');
-let server = require('../../server');
-let should = chai.should();
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const server = require('../../server');
+const should = chai.should();
 
 chai.use(chaiHttp);
 
 let token;
 //Our parent block
 describe('Users', () => {
-  
-
   before((done) => {
     const admin = {
       username: 'Peter',
       password: 'peter'
-    }
-
+    };
     chai.request(server)
       .post('/api/users/login')
       .send(admin)
       .end((err, res) => {
-        token = res.body.token
-        done()
-      })
+        token = res.body.token;
+        done();
+      });
   });
 
   /*
@@ -75,15 +67,14 @@ describe('Users', () => {
    */
   describe('/PUT/:id user', () => {
     it('it should UPDATE a user by the given id', (done) => {
-      let user = {
-        email: "fellas@fel.low",
-      }
+      const user = {
+        email: 'fellas@fel.low',
+      };
       chai.request(server)
         .put('api/users/2')
         .set('x-access-token', token)
         .send(user)
         .end((err, res) => {
-          console.log(err)
           res.should.have.status(200);
           res.body.should.be.a('object');
           res.body.should.have.property('message').eql('Successful Update');
@@ -109,19 +100,30 @@ describe('Users', () => {
     });
   });
 
-  describe('/GET/ pagination for user', () => {
-    it('it should return fetch number of users specified in integer \
-      and skip number of users specified in offset', (done) => {
-        chai.request(server)
-          .get('api/user/?limit=2&offset=2')
-          .set('x-access-token', token)
-          .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a(object);
-            res.body.should.have.property('message')/eql('Successful');
-            done()
-          });
-      });
+  describe('/GET/?limit={integer}?offset={integer} for user', () => {
+    it('it should GET users based on query', (done) => {
+      chai.request(server)
+        .get('api/users/?limit=1&offset=2')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
   });
 
+  describe('/GET/?username search user', () => {
+    it('it should GET a user by the given username', (done) => {
+      chai.request(server)
+        .get('api/search/users/?username=Fox')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body[0].should.have.property('username').eql('Fox');
+          done();
+        });
+    });
+  });
 });
