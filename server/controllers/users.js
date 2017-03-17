@@ -10,7 +10,7 @@ const createToken = (user) => {
 }
 
 // Hash the password with the salt
-const GenerateHash = (password) => {
+const generateHash = (password) => {
   return bcrypt.hashSync(password, salt);
 }
 
@@ -95,7 +95,7 @@ class UserController {
           message: 'Failed to authenticate token'
         });
       }
-      // TODO fetch the user from the db using the decoded id.
+
       User
         .findById(decoded._id)
         .then((user) => {
@@ -127,7 +127,6 @@ class UserController {
           res.status(400).send(error);
         });
     }
-
     return User
       .all()
       .then((user) => {

@@ -1,6 +1,7 @@
 const Document = require('../models').Document;
 
 class DocumentController {
+
   create(req, res) {
     return Document
       .create({
