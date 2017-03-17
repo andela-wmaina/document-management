@@ -19,7 +19,7 @@ class UserController {
     return User.create({
       username: req.body.username,
       email: req.body.email,
-      password: GenerateHash(req.body.password),
+      password: generateHash(req.body.password),
       roleId: req.body.role
     })
       .then((user) => {
