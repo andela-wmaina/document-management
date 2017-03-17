@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (Sequelize, DataTypes) => {
   const Document = Sequelize.define('Document', {
     title: { type: DataTypes.STRING },

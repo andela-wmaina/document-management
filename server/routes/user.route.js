@@ -9,11 +9,6 @@ Router.route('/users')
 
 Router.use(User.middleware)
 
-// Router.route('/users/?limit={integer}&offset={integer}')
-//   .get(User.pagination)
-
-
-
 Router.route('/users')
   .get(User.list);
 

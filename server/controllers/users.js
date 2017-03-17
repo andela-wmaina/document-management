@@ -19,7 +19,7 @@ class UserController {
     return User.create({
       username: req.body.username,
       email: req.body.email,
-      password: GenerateHash(req.body.password),
+      password: generateHash(req.body.password),
       roleId: req.body.role
     })
       .then((user) => {
@@ -53,6 +53,7 @@ class UserController {
         }
 
         const password = bcrypt.compareSync(req.body.password, user.password); // true
+
 
         if (!password) {
           return res.json('Password does not match');

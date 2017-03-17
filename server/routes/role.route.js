@@ -3,6 +3,6 @@ const { Role } = require('../controllers');
 
 Router.route('/roles')
   .post(Role.create)
-  .get(Role.list)
+  .get(Role.list);
 
 module.exports.RoleRouter = Router;
