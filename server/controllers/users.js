@@ -54,6 +54,7 @@ class UserController {
 
         const password = bcrypt.compareSync(req.body.password, user.password); // true
 
+
         if (!password) {
           return res.json('Password does not match');
         }
