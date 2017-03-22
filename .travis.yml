@@ -3,6 +3,8 @@ node_js:
   - "6"
 services:
   - postgresql
+before_script:
+  - npm i -D coveralls istanbul
 after_script:
   - cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
 after_success: 
