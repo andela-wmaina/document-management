@@ -33,7 +33,7 @@ describe('documents', () => {
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('array');
+          res.body.should.have.property('document').access.eql('public');
           done();
         });
     });
@@ -56,7 +56,7 @@ describe('documents', () => {
         .end((err, res) => {
           res.should.have.status(201);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Successful entry');
+          res.body.should.have.property('message').eql('You have successfuly created a document');
           done();
         });
     });
@@ -84,7 +84,7 @@ describe('documents', () => {
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Document Not Found');
+          res.body.should.have.property('message').eql('We could not find this document :(');
           done();
         });
     });
@@ -96,13 +96,13 @@ describe('documents', () => {
         title: 'Who Doc',
       };
       chai.request(server)
-        .put('api/documents/2')
+        .put('/api/documents/2')
         .set('x-access-token', token)
         .send(document)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Successful Update');
+          res.body.should.have.property('message').eql('You do not have the permission to edit this document');
           res.body.should.have.property('document').title.eql(document.title);
           done();
         });

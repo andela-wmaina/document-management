@@ -26,13 +26,13 @@ class UserController {
         const userInfo = { _id: user.id };
         const token = createToken(userInfo);
         res.status(200).json({
-          message: 'Successful registration',
+          message: 'You have been successfully registered',
           token,
           userDetails: user
         });
       })
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 
@@ -48,7 +48,7 @@ class UserController {
             .status(404)
             .json({
               success: false,
-              error: 'User not found'
+              error: 'User is not registered'
             });
         }
 
@@ -64,13 +64,13 @@ class UserController {
 
         res.status(200)
           .json({
-            message: 'Successful login',
+            message: 'You have been successfully logged in',
             token,
             user
           });
       })
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 
@@ -84,7 +84,7 @@ class UserController {
     if (!token) {
       return res.status(403).json({
         success: false,
-        message: 'No token provided'
+        message: 'Opps! You need a token to access this'
       });
     }
 
@@ -92,7 +92,7 @@ class UserController {
       if (error) {
         return res.json({
           success: false,
-          message: 'Failed to authenticate token'
+          message: 'Token provided is incorrect'
         });
       }
 
@@ -100,7 +100,7 @@ class UserController {
         .findById(decoded._id)
         .then((user) => {
           if (!user) {
-            return 'User Not Found';
+            return 'We could not find this user :(';
           }
           req.user = user;
           next();
@@ -118,13 +118,13 @@ class UserController {
         .then((user) => {
           if (!user) {
             return res.status(404).json({
-              message: 'No Users'
+              message: 'There are no users yet!'
             });
           }
           res.status(200).json(user);
         })
         .catch((error) => {
-          res.status(400).send(error);
+          res.status(400).json(error);
         });
     }
     return User
@@ -133,7 +133,7 @@ class UserController {
         res.status(200).json(user);
       })
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 
@@ -185,18 +185,18 @@ class UserController {
       .then((user) => {
         if (!user) {
           return res.status(404).json({
-            message: 'user Not Found',
+            message: 'We could not find this user :(',
           });
         }
         return user
           .destroy()
-          .then(() => res.status(200).json({ message: 'Deleted' }))
+          .then(() => res.status(200).json({ message: 'User has been deleted' }))
           .catch((error) => {
             res.status(400).json(error);
           });
       })
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 
@@ -210,13 +210,13 @@ class UserController {
       .then((user) => {
         if (user.length === 0) {
           return res.status(404).json({
-            message: 'User Not Found',
+            message: 'We could not find this user :(',
           });
         }
         return res.status(200).json(user);
       })
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 }

@@ -54,7 +54,7 @@ describe('roles', () => {
         .end((err, res) => {
           res.should.have.status(201);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Successful entry');
+          res.body.should.have.property('message').eql('You have created a role!');
           done();
         });
     });

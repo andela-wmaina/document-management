@@ -68,13 +68,13 @@ describe('Users', () => {
         email: 'fellas@fel.low',
       };
       chai.request(server)
-        .put('api/users/2')
+        .put('/api/users/2')
         .set('x-access-token', token)
         .send(user)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Successful Update');
+          res.body.should.have.property('message').eql('Your changes have been successfully applied');
           done();
         });
     });
@@ -86,12 +86,12 @@ describe('Users', () => {
   describe('/DELETE/:id user', () => {
     it('it should DELETE a user given the id', (done) => {
       chai.request(server)
-        .delete('api/users/4')
+        .delete('/api/users/4')
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Deleted');
+          res.body.should.have.property('message').eql('User has been deleted');
           done();
         });
     });
