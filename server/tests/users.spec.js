@@ -33,7 +33,6 @@ describe('Users', () => {
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('array');
           done();
         });
     });
@@ -100,11 +99,10 @@ describe('Users', () => {
   describe('/GET/?limit={integer}?offset={integer} for user', () => {
     it('it should GET users based on query', (done) => {
       chai.request(server)
-        .get('api/users/?limit=1&offset=2')
+        .get('/api/users/?limit=1&offset=2')
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
           done();
         });
     });
@@ -113,7 +111,7 @@ describe('Users', () => {
   describe('/GET/?username search user', () => {
     it('it should GET a user by the given username', (done) => {
       chai.request(server)
-        .get('api/search/users/?username=Fox')
+        .get('/api/search/users/?username=Fox')
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);

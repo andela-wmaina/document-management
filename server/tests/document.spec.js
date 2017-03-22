@@ -42,7 +42,26 @@ describe('documents', () => {
   /*
    * Test the /POST route
    */
+
   describe('/POST document', () => {
+     it('it should not POST a document', (done) => {
+      const document = {
+        title: 'Song List',
+        content: "I'm Yours - Jason Marz, The Man Who Can't Be Moved - The Script, Too Lost In You - Sugababes",
+        userId: 2
+      };
+      chai.request(server)
+        .post('/api/documents')
+        .send(document)
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.body.should.be.a('object');
+          res.body.should.have.property('success').eql('false');
+          res.body.should.have.property('message').eql('Opps! You need a token to access this');
+          done();
+        });
+    });
+
     it('it should POST a document', (done) => {
       const document = {
         title: 'Blue Sky',
@@ -115,7 +134,7 @@ describe('documents', () => {
   describe('/DELETE/:id document', (done) => {
     it('it should DELETE a document given the id', () => {
       chai.request(server)
-        .delete('api/documents/3')
+        .delete('/api/documents/3')
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
@@ -129,11 +148,10 @@ describe('documents', () => {
   describe('/GET/?limit={integer}?offset={integer} pagination for documents', () => {
     it('it should GET documents based on query', (done) => {
       chai.request(server)
-        .get('api/documents/?limit=1&offset=1')
+        .get('/api/documents/?limit=1&offset=1')
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
           done();
         });
     });
@@ -142,7 +160,7 @@ describe('documents', () => {
   describe('/GET/?title search documents', () => {
     it('it should GET a document by the given title', (done) => {
       chai.request(server)
-        .get('api/search/documents/?title=Knowledge')
+        .get('/api/search/documents/?title=Knowledge')
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);

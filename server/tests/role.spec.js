@@ -7,7 +7,7 @@ let should = chai.should();
 chai.use(chaiHttp);
 
 let token;
-//Our parent block
+
 describe('roles', () => {
   before((done) => {
     const admin = {
@@ -33,16 +33,15 @@ describe('roles', () => {
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('array');
           done();
         });
     });
   });
+
   /*
    * Test the /POST route
    */
   describe('/POST role', () => {
-
     it('it should POST a role', (done) => {
       let role = {
         name: "User"
