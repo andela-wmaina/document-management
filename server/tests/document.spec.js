@@ -175,7 +175,6 @@ describe('documents', () => {
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
-          console.log(res.body)
           res.body[0].should.have.property('title').eql('Wisdom');
           done();
         });
