@@ -143,39 +143,30 @@ class UserController {
       .then((user) => {
         if (!user) {
           return res.status(404).json({
-            message: 'user Not Found',
+            message: 'We could not find this user :(',
           });
         }
         return res.status(200).json(user);
       })
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 
   update(req, res) {
+    const updateData = req.body
     return User
-      .findById(req.params.id)
-      .then((user) => {
-        if (!user) {
-          return res.status(404).json({
-            message: 'user Not Found',
-          });
+      .update(updateData,
+      {
+        where: {
+          id: req.params.id
         }
-        return user
-          .update({
-            email: req.body.email || user.email,
-          })
-          .then(() => res.status(200).json({
-            message: 'Successful Update',
-            user
-          }))
-          .catch((error) => {
-            res.status(400).json(error);
-          });
       })
+      .then(() => res.status(200).json({
+        message: 'Your changes have been successfully applied'
+      }))
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 

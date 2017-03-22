@@ -63,31 +63,16 @@ class DocumentController {
   }
 
   update(req, res) {
+    const updateData = req.body
     return Document
-      .findById(req.params.id)
-      .then((document) => {
-        if (!document) {
-          return res.status(404).json({
-            message: 'We could not find this document :(',
-          });
+      .update(updateData, {
+        where: {
+          id: req.params.id
         }
-        if (document.userId !== req.user.id) {
-          return res.json({
-            message: 'You do not have the permission to edit this document'
-          });
-        }
-        return document
-          .update({
-            title: req.body.title || document.title,
-          })
-          .then(() => res.status(200).json({
-            message: 'Your changes have been successfully applied',
-            document: document
-          }))
-          .catch((error) => {
-            res.status(400).json(error);
-          });
       })
+      .then((document) => res.status(200).json({
+        message: 'Your changes have been successfully applied'
+      }))
       .catch((error) => {
         res.status(400).json(error);
       });
