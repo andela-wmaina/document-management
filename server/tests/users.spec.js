@@ -117,7 +117,6 @@ describe('Users', () => {
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
           res.body[0].should.have.property('username').eql('Fox');
           done();
         });

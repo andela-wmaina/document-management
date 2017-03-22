@@ -35,7 +35,6 @@ describe('documents', () => {
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.have.property('document').access.eql('public');
           done();
         });
     });
@@ -56,9 +55,9 @@ describe('documents', () => {
         .post('/api/documents')
         .send(document)
         .end((err, res) => {
-          res.should.have.status(201);
+          res.should.have.status(403);
           res.body.should.be.a('object');
-          res.body.should.have.property('success').eql('false');
+          res.body.should.have.property('success').eql(false);
           res.body.should.have.property('message').eql('Opps! You need a token to access this');
           done();
         });
@@ -111,10 +110,10 @@ describe('documents', () => {
     });
   });
 
-  describe('/PUT/:id document', (done) => {
-    it('it should UPDATE a document given the id', () => {
+  describe('/PUT/:id document', () => {
+    it('it should UPDATE a document given the id', (done) => {
       const document = {
-        title: 'Who Doc',
+        title: 'Wisdom',
       };
       chai.request(server)
         .put('/api/documents/2')
@@ -123,8 +122,7 @@ describe('documents', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('You do not have the permission to edit this document');
-          res.body.should.have.property('document').title.eql(document.title);
+          res.body.should.have.property('message').eql('Your changes have been successfully applied');
           done();
         });
     });
@@ -133,15 +131,15 @@ describe('documents', () => {
   /*
    * Test the /DELETE/:id route
    */
-  describe('/DELETE/:id document', (done) => {
-    it('it should DELETE a document given the id', () => {
+  describe('/DELETE/:id document', () => {
+    it('it should DELETE a document given the id', (done) => {
       chai.request(server)
         .delete('/api/documents/3')
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Deleted');
+          res.body.should.have.property('message').eql('Document successfully deleted');
           done();
         });
     });
@@ -160,14 +158,25 @@ describe('documents', () => {
   });
 
   describe('/GET/?title search documents', () => {
-    it('it should GET a document by the given title', (done) => {
+    it('it should not GET a document by the given title', (done) => {
       chai.request(server)
         .get('/api/search/documents/?title=Knowledge')
         .set('x-access-token', token)
         .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.have.property('message').eql('We could not find this document :(');
+          done();
+        });
+    });
+
+    it('it should GET a document by the given title', (done) => {
+      chai.request(server)
+        .get('/api/search/documents/?title=Wisdom')
+        .set('x-access-token', token)
+        .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
-          res.body[0].should.have.property('title').eql('Knowledge');
+          console.log(res.body)
+          res.body[0].should.have.property('title').eql('Wisdom');
           done();
         });
     });
