@@ -3,7 +3,9 @@ const app = express();
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const routes = require('./server/routes')
-const dotenv = require('dotenv').config()
+if (NODE_ENV='development') {
+	const dotenv = require('dotenv').config()
+}
 const port = Number(process.env.PORT) || 1337;
 
 // Log requests to the console.
