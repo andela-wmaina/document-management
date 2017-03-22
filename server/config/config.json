@@ -5,7 +5,8 @@
   },
   "test": {
     "use_env_variable": "DATABASE_URL_TESTS",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": false
   },
   "production": {
     "username": "root",
