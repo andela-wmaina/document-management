@@ -20,7 +20,7 @@ class UserController {
       username: req.body.username,
       email: req.body.email,
       password: generateHash(req.body.password),
-      roleId: req.body.role
+      roleId: req.body.role || 2
     })
       .then((user) => {
         const userInfo = { _id: user.id };
@@ -77,36 +77,6 @@ class UserController {
   // logout(req, res) {
   //  return req.logout();
   // },
-
-  middleware(req, res, next) {
-    const token = req.query.token || req.headers['x-access-token'];
-
-    if (!token) {
-      return res.status(403).json({
-        success: false,
-        message: 'Opps! You need a token to access this'
-      });
-    }
-
-    jwt.verify(token, secretTokenKey, (error, decoded) => {
-      if (error) {
-        return res.json({
-          success: false,
-          message: 'Token provided is incorrect'
-        });
-      }
-
-      User
-        .findById(decoded._id)
-        .then((user) => {
-          if (!user) {
-            return 'We could not find this user :(';
-          }
-          req.user = user;
-          next();
-        });
-    });
-  }
 
   list(req, res) {
     if (req.query.limit || req.query.offset) {
@@ -172,20 +142,12 @@ class UserController {
 
   delete(req, res) {
     return User
-      .findById(req.params.id)
-      .then((user) => {
-        if (!user) {
-          return res.status(404).json({
-            message: 'We could not find this user :(',
-          });
+      .destroy({
+        where: {
+          id: req.params.id
         }
-        return user
-          .destroy()
-          .then(() => res.status(200).json({ message: 'User has been deleted' }))
-          .catch((error) => {
-            res.status(400).json(error);
-          });
       })
+      .then(() => res.status(200).json({ message: 'User successfully deleted' }))
       .catch((error) => {
         res.status(400).json(error);
       });

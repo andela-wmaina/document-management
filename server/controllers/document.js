@@ -8,7 +8,7 @@ class DocumentController {
         title: req.body.title,
         content: req.body.content,
         access: req.body.access || 'private',
-        userId: req.body.userId
+        userId: req.user.userId
       })
       .then((document) => {
         res.status(201).json({
@@ -62,6 +62,7 @@ class DocumentController {
       .catch(error => res.status(400).json(error));
   }
 
+
   update(req, res) {
     const updateData = req.body
     return Document
@@ -80,25 +81,12 @@ class DocumentController {
 
   delete(req, res) {
     return Document
-      .findById(req.params.id)
-      .then((document) => {
-        if (!document) {
-          return res.status(404).json({
-            message: 'We could not find this document :(',
-          });
+      .destroy({
+        where: {
+          id: req.params.id
         }
-        if (document.userId !== req.user.id && req.user.roleId !== 1) {
-          return res.json({
-            message: 'You do not have the permission to edit this document'
-          });
-        }
-        return document
-          .destroy()
-          .then(() => res.status(200).json({ message: 'Document successfully deleted' }))
-          .catch((error) => {
-            res.status(400).json(error);
-          });
       })
+      .then(() => res.status(200).json({ message: 'Document successfully deleted' }))
       .catch((error) => {
         res.status(400).json(error);
       });
