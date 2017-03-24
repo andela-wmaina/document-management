@@ -1,6 +1,7 @@
+// Change to test environment
 process.env.NODE_ENV='test'
 
-//Require the dev-dependencies
+// Dev Dependencies
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../server');
@@ -9,8 +10,10 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 let token;
-//Our parent block
+let token2;
+
 describe('documents', () => {
+  // Before block to get token
   before((done) => {
     const admin = {
       username: 'Peter',
@@ -21,8 +24,20 @@ describe('documents', () => {
       .send(admin)
       .end((err, res) => {
         token = res.body.token;
-        done();
       });
+
+    const user = {
+      username: 'Birdie',
+      password: 'birdie'
+    };
+    
+    chai.request(server)
+      .post('/api/users/login')
+      .send(user)
+      .end((err, res) => {
+        token2 = res.body.token;
+        done();
+    });
   });
 
   /*
@@ -43,13 +58,11 @@ describe('documents', () => {
   /*
    * Test the /POST route
    */
-
   describe('/POST document', () => {
      it('it should not POST a document', (done) => {
       const document = {
         title: 'Song List',
-        content: "I'm Yours - Jason Marz, The Man Who Can't Be Moved - The Script, Too Lost In You - Sugababes",
-        userId: 2
+        content: "I'm Yours - Jason Marz, The Man Who Can't Be Moved - The Script, Too Lost In You - Sugababes"
       };
       chai.request(server)
         .post('/api/documents')
@@ -67,11 +80,10 @@ describe('documents', () => {
       const document = {
         title: 'Blue Sky',
         content: 'Why is the sky blue? Why did He create it to be blue?',
-        userId: 2
       };
       chai.request(server)
         .post('/api/documents')
-        .set('x-access-token', token)
+        .set('x-access-token', token2)
         .send(document)
         .end((err, res) => {
           res.should.have.status(201);
@@ -82,6 +94,9 @@ describe('documents', () => {
     });
   });
 
+  /*
+   * Test the /GET/:id route
+   */
   describe('/GET/:id document', () => {
     it('it should GET a document by the given id', (done) => {
       chai.request(server)
@@ -110,6 +125,9 @@ describe('documents', () => {
     });
   });
 
+  /*
+   * Test the /PUT/:id route
+   */
   describe('/PUT/:id document', () => {
     it('it should UPDATE a document given the id', (done) => {
       const document = {
@@ -126,20 +144,67 @@ describe('documents', () => {
           done();
         });
     });
-  });
 
-  /*
-   * Test the /DELETE/:id route
-   */
-  describe('/DELETE/:id document', () => {
-    it('it should DELETE a document given the id', (done) => {
+    it('it should not UPDATE a document if document is not an admin or the owner', (done) => {
+      const document = {
+        title: 'Songs',
+      };
       chai.request(server)
-        .delete('/api/documents/3')
-        .set('x-access-token', token)
+        .put('/api/documents/1')
+        .set('x-access-token', token2)
+        .send(document)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Document successfully deleted');
+          res.body.should.have.property('message').eql('You do not have the permission to make any changes to this document');
+          done();
+        });
+    });
+
+    it('it should not UPDATE a document if document is not found', (done) => {
+      const document = {
+        title: 'Songs',
+      };
+      chai.request(server)
+        .put('/api/documents/54')
+        .set('x-access-token', token2)
+        .send(document)
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('We could not find this document :(');
+          done();
+        });
+    });
+
+    it('it should UPDATE a document by the given id if an admin', (done) => {
+      const document = {
+        title: 'Knowledge',
+      };
+      chai.request(server)
+        .put('/api/documents/2')
+        .set('x-access-token', token)
+        .send(document)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('Your changes have been successfully applied');
+          done();
+        });
+    });
+
+    it('it should UPDATE a document by the given id if userId matches owners id', (done) => {
+      const document = {
+        title: 'Songs',
+      };
+      chai.request(server)
+        .put('/api/documents/3')
+        .set('x-access-token', token2)
+        .send(document)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('Your changes have been successfully applied');
           done();
         });
     });
@@ -157,10 +222,13 @@ describe('documents', () => {
     });
   });
 
+  /*
+   * Test the /GET/?title route
+   */
   describe('/GET/?title search documents', () => {
     it('it should not GET a document by the given title', (done) => {
       chai.request(server)
-        .get('/api/search/documents/?title=Knowledge')
+        .get('/api/search/documents/?title=Wisdom')
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(404);
@@ -171,11 +239,64 @@ describe('documents', () => {
 
     it('it should GET a document by the given title', (done) => {
       chai.request(server)
-        .get('/api/search/documents/?title=Wisdom')
+        .get('/api/search/documents/?title=Knowledge')
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body[0].should.have.property('title').eql('Wisdom');
+          res.body[0].should.have.property('title').eql('Knowledge');
+          done();
+        });
+    });
+  });
+
+  /*
+   * Test the /DELETE/:id route
+   */
+  describe('/DELETE/:id document', () => {
+    it('it should DELETE a document given the id', (done) => {
+      chai.request(server)
+        .delete('/api/documents/4')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('Document successfully deleted');
+          done();
+        });
+    });
+
+    it('it should not DELETE a document that does not exist', (done) => {
+      chai.request(server)
+        .delete('/api/documents/145')
+        .set('x-access-token', token2)
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('We could not find this document :(');
+          done();
+        });
+    });
+
+    it('it should not DELETE a document if it is not the owner or an admin deleting it', (done) => {
+      chai.request(server)
+        .delete('/api/documents/1')
+        .set('x-access-token', token2)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('You do not have the permission to make any changes to this document');
+          done();
+        });
+    });
+
+    it('it should DELETE a document if an admin is deleting it', (done) => {
+      chai.request(server)
+        .delete('/api/documents/3')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('Document successfully deleted');
           done();
         });
     });

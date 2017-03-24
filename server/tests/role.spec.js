@@ -1,6 +1,7 @@
+// Change to test environment
 process.env.NODE_ENV='test'
 
-//Require the dev-dependencies
+// Dev Dependencies
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../../server');
@@ -9,20 +10,34 @@ let should = chai.should();
 chai.use(chaiHttp);
 
 let token;
+let token2;
 
 describe('roles', () => {
+  // Before block to get token
   before((done) => {
     const admin = {
       username: 'Peter',
       password: 'peter'
-    }
+    };
     chai.request(server)
       .post('/api/users/login')
       .send(admin)
       .end((err, res) => {
-        token = res.body.token
-        done()
-      })
+        token = res.body.token;
+      });
+
+    const user = {
+      username: 'Birdie',
+      password: 'birdie'
+    };
+    
+    chai.request(server)
+      .post('/api/users/login')
+      .send(user)
+      .end((err, res) => {
+        token2 = res.body.token;
+        done();
+      });
   });
 
   /*
@@ -44,6 +59,22 @@ describe('roles', () => {
    * Test the /POST route
    */
   describe('/POST role', () => {
+      it('it should not POST a role if not admin', (done) => {
+      let role = {
+        name: "User"
+      }
+      chai.request(server)
+        .post('/api/roles')
+        .set('x-access-token', token2)
+        .send(role)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('You do not have the permission to create a role');
+          done();
+        });
+    });
+
     it('it should POST a role', (done) => {
       let role = {
         name: "User"

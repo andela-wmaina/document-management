@@ -37,7 +37,7 @@ describe('Users', () => {
         username: 'August',
         email: 'peter@tree.com',
         password: 'august',
-        role: 2
+        roleId: 2
       };
       chai.request(server)
         .post('/api/users')
@@ -56,7 +56,7 @@ describe('Users', () => {
         username: 'August',
         email: 'august@fel.low',
         password: 'august',
-        role: 2
+        roleId: 2
       };
       chai.request(server)
         .post('/api/users')
