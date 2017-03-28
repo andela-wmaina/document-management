@@ -35,6 +35,7 @@ module.exports = {
           key: 'id',
           as: 'roleId',
         },
+        defaultValue: 2
       }
     }),
   down: queryInterface => queryInterface.dropTable('Users')

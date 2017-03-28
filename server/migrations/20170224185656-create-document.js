@@ -14,7 +14,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       access: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: 'private'
       },
       createdAt: {
         allowNull: false,

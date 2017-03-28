@@ -6,7 +6,7 @@ class RolesController {
       name: req.body.name
     })
     .then(role => res.status(201).json({
-      message: 'Successful entry',
+      message: 'You have created a role!',
       role
     }))
     .catch(error => res.status(400).json(error));

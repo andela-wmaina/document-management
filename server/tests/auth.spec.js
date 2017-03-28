@@ -1,3 +1,5 @@
+process.env.NODE_ENV='test'
+
 //Require the dev-dependencies
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -16,7 +18,7 @@ describe('Users', () => {
         username: 'August',
         email: 'august.low',
         password: 'august',
-        role: 2
+        roleId: 2
       };
       chai.request(server)
         .post('/api/users')
@@ -35,7 +37,7 @@ describe('Users', () => {
         username: 'August',
         email: 'peter@tree.com',
         password: 'august',
-        role: 2
+        roleId: 2
       };
       chai.request(server)
         .post('/api/users')
@@ -54,7 +56,7 @@ describe('Users', () => {
         username: 'August',
         email: 'august@fel.low',
         password: 'august',
-        role: 2
+        roleId: 2
       };
       chai.request(server)
         .post('/api/users')
@@ -62,7 +64,7 @@ describe('Users', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Successful registration');
+          res.body.should.have.property('message').eql('You have been successfully registered');
           done();
         });
     });
@@ -78,7 +80,7 @@ describe('Users', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Successful login');
+          res.body.should.have.property('message').eql('You have been successfully logged in');
           done();
         });
     });

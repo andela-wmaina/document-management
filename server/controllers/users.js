@@ -1,6 +1,6 @@
 const User = require('../models').User;
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 const secretTokenKey = process.env.SECRET_TOKEN_KEY;
 // Generate a salt
 const salt = bcrypt.genSaltSync();
@@ -20,19 +20,19 @@ class UserController {
       username: req.body.username,
       email: req.body.email,
       password: generateHash(req.body.password),
-      roleId: req.body.role
+      roleId: req.body.role || 2
     })
       .then((user) => {
         const userInfo = { _id: user.id };
         const token = createToken(userInfo);
         res.status(200).json({
-          message: 'Successful registration',
+          message: 'You have been successfully registered',
           token,
           userDetails: user
         });
       })
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 
@@ -48,7 +48,7 @@ class UserController {
             .status(404)
             .json({
               success: false,
-              error: 'User not found'
+              error: 'User is not registered'
             });
         }
 
@@ -64,49 +64,19 @@ class UserController {
 
         res.status(200)
           .json({
-            message: 'Successful login',
+            message: 'You have been successfully logged in',
             token,
             user
           });
       })
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 
   // logout(req, res) {
   //  return req.logout();
   // },
-
-  middleware(req, res, next) {
-    const token = req.query.token || req.headers['x-access-token'];
-
-    if (!token) {
-      return res.status(403).json({
-        success: false,
-        message: 'No token provided'
-      });
-    }
-
-    jwt.verify(token, secretTokenKey, (error, decoded) => {
-      if (error) {
-        return res.json({
-          success: false,
-          message: 'Failed to authenticate token'
-        });
-      }
-
-      User
-        .findById(decoded._id)
-        .then((user) => {
-          if (!user) {
-            return 'User Not Found';
-          }
-          req.user = user;
-          next();
-        });
-    });
-  }
 
   list(req, res) {
     if (req.query.limit || req.query.offset) {
@@ -118,13 +88,13 @@ class UserController {
         .then((user) => {
           if (!user) {
             return res.status(404).json({
-              message: 'No Users'
+              message: 'There are no users yet!'
             });
           }
           res.status(200).json(user);
         })
         .catch((error) => {
-          res.status(400).send(error);
+          res.status(400).json(error);
         });
     }
     return User
@@ -133,7 +103,7 @@ class UserController {
         res.status(200).json(user);
       })
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 
@@ -143,60 +113,43 @@ class UserController {
       .then((user) => {
         if (!user) {
           return res.status(404).json({
-            message: 'user Not Found',
+            message: 'We could not find this user :(',
           });
         }
         return res.status(200).json(user);
       })
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 
   update(req, res) {
+    const updateData = req.body
     return User
-      .findById(req.params.id)
-      .then((user) => {
-        if (!user) {
-          return res.status(404).json({
-            message: 'user Not Found',
-          });
+      .update(updateData,
+      {
+        where: {
+          id: req.params.id
         }
-        return user
-          .update({
-            email: req.body.email || user.email,
-          })
-          .then(() => res.status(200).json({
-            message: 'Successful Update',
-            user
-          }))
-          .catch((error) => {
-            res.status(400).json(error);
-          });
       })
+      .then(() => res.status(200).json({
+        message: 'Your changes have been successfully applied'
+      }))
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 
   delete(req, res) {
     return User
-      .findById(req.params.id)
-      .then((user) => {
-        if (!user) {
-          return res.status(404).json({
-            message: 'user Not Found',
-          });
+      .destroy({
+        where: {
+          id: req.params.id
         }
-        return user
-          .destroy()
-          .then(() => res.status(200).json({ message: 'Deleted' }))
-          .catch((error) => {
-            res.status(400).json(error);
-          });
       })
+      .then(() => res.status(200).json({ message: 'User successfully deleted' }))
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 
@@ -210,13 +163,13 @@ class UserController {
       .then((user) => {
         if (user.length === 0) {
           return res.status(404).json({
-            message: 'User Not Found',
+            message: 'We could not find this user :(',
           });
         }
         return res.status(200).json(user);
       })
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 }
