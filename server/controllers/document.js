@@ -7,15 +7,16 @@ class DocumentController {
       .create({
         title: req.body.title,
         content: req.body.content,
-        userId: req.body.userId
+        access: req.body.access || 'private',
+        userId: req.user.userId
       })
       .then((document) => {
-        res.status(201).send({
-          message: 'Successful entry',
+        res.status(201).json({
+          message: 'You have successfuly created a document',
           document
         });
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).json(error));
   }
 
   list(req, res) {
@@ -27,20 +28,24 @@ class DocumentController {
         })
         .then((document) => {
           if (!document) {
-            return res.status(404).send({
-              message: 'No Users'
+            return res.status(404).json({
+              message: 'We could not find this document :('
             });
           }
-          res.status(200).send(document);
+          res.status(200).json(document);
         })
         .catch((error) => {
-          res.status(400).send(error)
+          res.status(400).json(error)
         });
     }
     return Document
-      .all()
-      .then(document => res.status(200).send(document))
-      .catch(error => res.status(400).send(error));
+      .findAll({
+        where: {
+          access: 'public'
+        }
+      })
+      .then(document => res.status(200).json(document))
+      .catch(error => res.status(400).json(error));
   }
 
   find(req, res) {
@@ -48,69 +53,42 @@ class DocumentController {
       .findById(req.params.id)
       .then((document) => {
         if (!document) {
-          return res.status(404).send({
-            message: 'Document Not Found',
+          return res.status(404).json({
+            message: 'We could not find this document :(',
           });
         }
-        return res.status(200).send(document);
+        return res.status(200).json(document);
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).json(error));
   }
 
+
   update(req, res) {
+    const updateData = req.body
     return Document
-      .findById(req.params.id)
-      .then((document) => {
-        if (!document) {
-          return res.status(404).send({
-            message: 'Document Not Found',
-          });
+      .update(updateData, {
+        where: {
+          id: req.params.id
         }
-        if (document.userId !== req.user.id) {
-          return res.json({
-            message: 'You do not have the permission to edit this document'
-          });
-        }
-        return document
-          .update({
-            title: req.body.title || document.title,
-          })
-          .then(() => res.status(200).send({
-            message: 'Succesful Update',
-            document: document
-          }))
-          .catch((error) => {
-            res.status(400).send(error);
-          });
       })
+      .then((document) => res.status(200).json({
+        message: 'Your changes have been successfully applied'
+      }))
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 
   delete(req, res) {
     return Document
-      .findById(req.params.id)
-      .then((document) => {
-        if (!document) {
-          return res.status(404).send({
-            message: 'Document Not Found',
-          });
+      .destroy({
+        where: {
+          id: req.params.id
         }
-        if (document.userId !== req.user.id && req.user.roleId !== 1) {
-          return res.json({
-            message: 'You do not have the permission to edit this document'
-          });
-        }
-        return document
-          .destroy()
-          .then(() => res.status(200).send({ message: 'Deleted' }))
-          .catch((error) => {
-            res.status(400).send(error);
-          });
       })
+      .then(() => res.status(200).json({ message: 'Document successfully deleted' }))
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(400).json(error);
       });
   }
 
@@ -124,7 +102,7 @@ class DocumentController {
       .then((document) => {
         if (document.length === 0) {
           return res.status(404).json({
-            message: 'Document Not Found',
+            message: 'We could not find this document :(',
           });
         }
         return res.status(200).json(document);

@@ -10,6 +10,14 @@ module.exports = {
           updatedAt: new Date()
         },
         {
+          username: 'Birdie',
+          email: 'birdie@tree.com',
+          password: '$2a$10$vorul1Tvy54QHiQcn.CU1O7V3MZrvnB8qE49RsjYqB9kzfpaAvGwy',
+          roleId: 2,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
           username: 'Fox',
           email: 'fox@tree.com',
           password: '$2a$10$Jpu1xyNkTbTOOh58A0hPUeKg88n1ReTfs05eD9Z8VdWPsOwG5s3BO',
