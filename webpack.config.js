@@ -11,7 +11,6 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   inject: 'body'
 });
 
-
 module.exports = {
   devtool: 'cheap-module-source-map',
   entry: './client/src/index.js',
