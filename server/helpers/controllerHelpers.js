@@ -10,8 +10,8 @@ class controllerHelpers {
     */
     validateInput(data) {
       let invalid;
-      Object.values(data).map((dat) => {
-        if (dat === '' || dat === null) {
+      Object.keys(data).map((val) => {
+        if (data[val] === '' || data[val] === null) {
           invalid = true;
         }
       });
