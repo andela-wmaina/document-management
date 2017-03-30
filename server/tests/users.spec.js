@@ -1,5 +1,5 @@
 // Change to test environment
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV='test';
 
 // Dev Dependencies
 const chai = require('chai');

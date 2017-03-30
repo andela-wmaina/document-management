@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV='test';
 
 // Require the dev-dependencies
 const chai = require('chai');
