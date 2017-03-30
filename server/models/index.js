@@ -9,7 +9,7 @@ const config    = require(__dirname + '/../config/config.json')[env];
 const db        = {};
 
 if (process.env.NODE_ENV !== 'production') {
-  const dotenv = require('dotenv').config()
+  const dotenv = require('dotenv').config();
 }
 
 if (config.use_env_variable) {

@@ -1,12 +1,12 @@
 // Change to test environment
-process.env.NODE_ENV='test'
+process.env.NODE_ENV='test';
 
 // Dev Dependencies
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../server');
-const should = chai.should();
 
+const should = chai.should();
 chai.use(chaiHttp);
 
 let token;
@@ -30,7 +30,6 @@ describe('Users', () => {
       username: 'Birdie',
       password: 'birdie'
     };
-    
     chai.request(server)
       .post('/api/users/login')
       .send(user)
@@ -79,7 +78,7 @@ describe('Users', () => {
    * Test the /PUT/:id route
    */
   describe('/PUT/:id user', () => {
-     it('it should not UPDATE a user if user is not an admin or the actual user', (done) => {
+    it('it should not UPDATE a user if user is not an admin or the actual user', (done) => {
       const user = {
         email: 'fellas@fel.low',
       };
@@ -215,5 +214,4 @@ describe('Users', () => {
         });
     });
   });
-
 });

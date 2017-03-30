@@ -1,12 +1,12 @@
 // Change to test environment
-process.env.NODE_ENV='test'
+process.env.NODE_ENV='test';
 
 // Dev Dependencies
-let chai = require('chai');
-let chaiHttp = require('chai-http');
-let server = require('../../server');
-let should = chai.should();
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const server = require('../../server');
 
+const should = chai.should();
 chai.use(chaiHttp);
 
 let token;
@@ -30,7 +30,7 @@ describe('roles', () => {
       username: 'Birdie',
       password: 'birdie'
     };
-    
+
     chai.request(server)
       .post('/api/users/login')
       .send(user)
@@ -59,10 +59,10 @@ describe('roles', () => {
    * Test the /POST route
    */
   describe('/POST role', () => {
-      it('it should not POST a role if not admin', (done) => {
-      let role = {
-        name: "User"
-      }
+    it('it should not POST a role if not admin', (done) => {
+      const role = {
+        name: 'User'
+      };
       chai.request(server)
         .post('/api/roles')
         .set('x-access-token', token2)
@@ -76,9 +76,9 @@ describe('roles', () => {
     });
 
     it('it should POST a role', (done) => {
-      let role = {
-        name: "User"
-      }
+      const role = {
+        name: 'User'
+      };
       chai.request(server)
         .post('/api/roles')
         .set('x-access-token', token)

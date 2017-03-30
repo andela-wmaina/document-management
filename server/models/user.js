@@ -1,7 +1,8 @@
 module.exports = (Sequelize, DataTypes) => {
   const User = Sequelize.define('User', {
     username: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      required: true
     },
     email: {
       type: DataTypes.STRING,
@@ -11,11 +12,13 @@ module.exports = (Sequelize, DataTypes) => {
         isEmail: {
           msg: 'Email address must be valid'
         }
-      }
+      },
+      required: true
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      required: true
     }
   }, {
     classMethods: {

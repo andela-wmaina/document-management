@@ -1,7 +1,13 @@
 module.exports = (Sequelize, DataTypes) => {
   const Document = Sequelize.define('Document', {
-    title: { type: DataTypes.STRING },
-    content: { type: DataTypes.STRING },
+    title: {
+      type: DataTypes.STRING,
+      required: true
+    },
+    content: {
+      type: DataTypes.STRING,
+      required: true
+    },
     access: {
       type: DataTypes.STRING,
       required: true,
