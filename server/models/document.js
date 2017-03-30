@@ -15,15 +15,15 @@ module.exports = (Sequelize, DataTypes) => {
       enum: ['private', 'public']
     }
   }, {
-      classMethods: {
-        associate: (models) => {
-          // associations can be defined here
-          Document.belongsTo(models.User, {
-            foreignKey: 'userId',
-            onDelete: 'CASCADE',
-          });
-        }
+    classMethods: {
+      associate: (models) => {
+        // associations can be defined here
+        Document.belongsTo(models.User, {
+          foreignKey: 'userId',
+          onDelete: 'CASCADE',
+        });
       }
-    });
+    }
+  });
   return Document;
 };

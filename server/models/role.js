@@ -3,15 +3,15 @@ module.exports = (Sequelize, DataTypes) => {
     name: DataTypes.STRING,
     required: true
   }, {
-      classMethods: {
-        associate: (models) => {
-          // associations can be defined here
-          Role.hasMany(models.User, {
-            foreignKey: 'roleId',
-            as: 'users',
-          });
-        }
+    classMethods: {
+      associate: (models) => {
+        // associations can be defined here
+        Role.hasMany(models.User, {
+          foreignKey: 'roleId',
+          as: 'users',
+        });
       }
-    });
+    }
+  });
   return Role;
 };

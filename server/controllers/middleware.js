@@ -4,7 +4,17 @@ const jwt = require('jsonwebtoken');
 
 const secretTokenKey = process.env.SECRET_TOKEN_KEY;
 
+/* Defines middelware methods */
 class MiddlewareController {
+
+   /**
+    * authMiddleware method
+    * Checks if user has a token and if token is valid
+    * @params req
+    * @params res
+    * @params next
+    * @return { object } - when token is rejected
+  */
   authMiddleware(req, res, next) {
     const token = req.query.token || req.headers['x-access-token'];
 
@@ -35,6 +45,14 @@ class MiddlewareController {
     });
   }
 
+  /**
+    * checkPermissionDocs method
+    * Checks if user has permission to make changes to a document
+    * @params req
+    * @params res
+    * @params next
+    * @return { object } - when request is rejected
+  */
   checkPermissionDocs(req, res, next) {
     Document
       .findById(req.params.id)
@@ -57,6 +75,14 @@ class MiddlewareController {
       });
   }
 
+  /**
+    * checkPermissionUsers method
+    * Checks if user has permission to make changes to a user
+    * @params req
+    * @params res
+    * @params next
+    * @return { object } - when request is rejected
+  */
   checkPermissionUsers(req, res, next) {
     User
       .findById(req.params.id)
@@ -79,6 +105,14 @@ class MiddlewareController {
       });
   }
 
+  /**
+    * checkPermissionRoles method
+    * Checks if user has permission to make changes to a role
+    * @params req
+    * @params res
+    * @params next
+    * @return { object } - when request is rejected
+  */
   checkPermissionRoles(req, res, next) {
     if (req.user.roleId !== 1) {
       return res.json({
@@ -88,6 +122,15 @@ class MiddlewareController {
     next();
   }
 
+   /**
+    * checkUser method
+    * Filters private document according to user role and user id
+    * Sets req.data with results
+    * @params req
+    * @params res
+    * @params next
+    * @return {void}
+  */
   checkUser(req, res, next) {
     if (req.user.roleId === 2) {
       return Document
