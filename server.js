@@ -3,11 +3,12 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const routes = require('./server/routes');
 
-const app = express();
-const port = Number(process.env.PORT) || 1337;
 if (NODE_ENV = 'development') {
   const dotenv = require('dotenv').config();
 }
+
+const app = express();
+const port = Number(process.env.PORT) || 1337;
 
 // Log requests to the console.
 app.use(logger('dev'));
