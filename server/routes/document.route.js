@@ -4,7 +4,7 @@ const { Middleware } = require('../controllers');
 
 Router.route('/documents')
   .post(Document.create)
-  .get(Document.list);
+  .get(Middleware.checkUser, Document.list);
 
 Router.route('/documents/:id')
   .delete(Middleware.checkPermissionDocs, Document.delete)

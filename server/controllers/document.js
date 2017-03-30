@@ -26,6 +26,7 @@ class DocumentController {
   }
 
   list(req, res) {
+    const privateDocs = req.data;
     if (req.query.limit || req.query.offset) {
       return Document
         .findAll({
@@ -50,7 +51,7 @@ class DocumentController {
           access: 'public'
         }
       })
-      .then(document => res.status(200).json(document))
+      .then(document => res.status(200).json({ document, privateDocs }))
       .catch(error => res.status(400).json(error));
   }
 

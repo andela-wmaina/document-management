@@ -1,6 +1,7 @@
 const User = require('../models').User;
 const Document = require('../models').Document;
 const jwt = require('jsonwebtoken');
+
 const secretTokenKey = process.env.SECRET_TOKEN_KEY;
 
 class MiddlewareController {
@@ -74,7 +75,6 @@ class MiddlewareController {
         next();
       })
       .catch((error) => {
-        console.log(error)
         res.status(400).json(error);
       });
   }
@@ -86,6 +86,37 @@ class MiddlewareController {
       });
     }
     next();
+  }
+
+  checkUser(req, res, next) {
+    if (req.user.roleId === 2) {
+      return Document
+        .findAll({
+          where: {
+            userId: req.user.id
+          }
+        })
+        .then((docs) => {
+          req.data = docs;
+          next();
+        })
+        .catch((error) => {
+          res.status(400).json(error);
+        });
+    }
+    return Document
+      .findAll({
+        where: {
+          access: 'private'
+        }
+      })
+      .then((docs) => {
+        req.data = docs;
+        next();
+      })
+      .catch((error) => {
+        res.status(400).json(error);
+      });
   }
 }
 
