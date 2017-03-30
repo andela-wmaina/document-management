@@ -11,7 +11,7 @@ class DocumentController {
         userId: req.user.userId
       })
       .then((document) => {
-        res.status(201).json({
+        res.status(200).json({
           message: 'You have successfuly created a document',
           document
         });
