@@ -6,11 +6,11 @@ const webpack = require('webpack');
 const config = require('./webpack.config');
 const path = require('path');
 const app = express();
-const port = Number(process.env.PORT);
-const compiler = webpack(config)
+const port = Number(process.env.PORT) || 1337;
+const compiler = webpack(config);
 
 if (NODE_ENV = 'development') {
-  require('dotenv').config()
+  require('dotenv').config();
 }
 
 // Log requests to the console.
@@ -19,7 +19,7 @@ app.use(logger('dev'));
 app.use(require('webpack-dev-middleware')(compiler, {
 	noInfo: true,
 	publicPath: config.output.publicPath
-}))
+}));
 
 app.use(bodyParser.json());
 app.use(express.static(`${__dirname}/public`))
@@ -35,9 +35,9 @@ app.get('/*', (req, res) => {
 
 app.listen(port, (eror) => {
   if (eror) {
-    throw new Error(error)
+    throw new Error(error);
   }
-  console.log(`Server running on port ${port} on ${app.get('env')} mode`)
+  console.log(`Server running on port ${port} on ${app.get('env')} mode`);
 });
 
 module.exports = app;
