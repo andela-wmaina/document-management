@@ -1,5 +1,5 @@
 // Change to test environment
-process.env.NODE_ENV = 'test'
+process.env.NODE_ENV='test'
 
 // Dev Dependencies
 const chai = require('chai');
@@ -30,14 +30,14 @@ describe('documents', () => {
       username: 'Birdie',
       password: 'birdie'
     };
-
+    
     chai.request(server)
       .post('/api/users/login')
       .send(user)
       .end((err, res) => {
         token2 = res.body.token;
         done();
-      });
+    });
   });
 
   /*
@@ -59,7 +59,7 @@ describe('documents', () => {
    * Test the /POST route
    */
   describe('/POST document', () => {
-    it('it should not POST a document', (done) => {
+     it('it should not POST a document', (done) => {
       const document = {
         title: 'Song List',
         content: "I'm Yours - Jason Marz, The Man Who Can't Be Moved - The Script, Too Lost In You - Sugababes"
@@ -86,7 +86,7 @@ describe('documents', () => {
         .set('x-access-token', token2)
         .send(document)
         .end((err, res) => {
-          res.should.have.status(200);
+          res.should.have.status(201);
           res.body.should.be.a('object');
           res.body.should.have.property('message').eql('You have successfuly created a document');
           done();
