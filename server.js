@@ -6,7 +6,7 @@ const webpack = require('webpack');
 const config = require('./webpack.config');
 const path = require('path');
 const app = express();
-const port = Number(process.env.PORT);
+const port = Number(process.env.PORT) || 1337;
 const compiler = webpack(config)
 
 if (NODE_ENV = 'development') {
