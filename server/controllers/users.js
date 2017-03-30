@@ -1,21 +1,25 @@
 const User = require('../models').User;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt-nodejs');
+
+const controllerHelpers = require('../helpers/controllerHelpers');
+
 const secretTokenKey = process.env.SECRET_TOKEN_KEY;
 // Generate a salt
 const salt = bcrypt.genSaltSync();
 
-const createToken = (user) => {
-  return jwt.sign(user, secretTokenKey);
-}
+const createToken = user => jwt.sign(user, secretTokenKey);
 
 // Hash the password with the salt
-const generateHash = (password) => {
-  return bcrypt.hashSync(password, salt);
-}
+const generateHash = password => bcrypt.hashSync(password, salt);
 
 class UserController {
   create(req, res) {
+    if (controllerHelpers.validateInput(req.body)) {
+      return res.status(403).json({
+        message: 'Invalid Input'
+      });
+    }
     return User.create({
       username: req.body.username,
       email: req.body.email,
@@ -37,6 +41,11 @@ class UserController {
   }
 
   login(req, res) {
+    if (controllerHelpers.validateInput(req.body)) {
+      return res.status(403).json({
+        message: 'Invalid Input'
+      });
+    }
     return User
       .findOne({
         where: { username: req.body.username }
@@ -74,9 +83,6 @@ class UserController {
       });
   }
 
-  // logout(req, res) {
-  //  return req.logout();
-  // },
 
   list(req, res) {
     if (req.query.limit || req.query.offset) {
@@ -124,7 +130,13 @@ class UserController {
   }
 
   update(req, res) {
-    const updateData = req.body
+    if (controllerHelpers.validateInput(req.body)) {
+      return res.status(403).json({
+        message: 'Invalid Input'
+      });
+    }
+
+    const updateData = req.body;
     return User
       .update(updateData,
       {
