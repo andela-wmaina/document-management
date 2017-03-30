@@ -1,6 +1,12 @@
+HOST: https://docmg.herokuapp.com/
+
 # Docs API
 
-Docs is a simple API that allows users to create documents and manage them
+Docs is a simple API that allows users to create documents and manage them.
+
+NOTE: Authenticated endpoints are accessed through a token provided on successful
+registration and login. This token is set in the header by assigning it
+to `x-access-token`.
 
 ## User Collection [api/users]
 
@@ -9,8 +15,16 @@ Docs is a simple API that allows users to create documents and manage them
 You can view all users. This is a GET request that returns all records in the
 user table.
 
++ Request (application/json)
+
+    + Header
+
+            {
+                "x-access-token": token
+            }
+
 + Response 201 (application/json)
-        
+
         [
             {
                 "id": 1,
@@ -21,7 +35,7 @@ user table.
                 "updatedAt": "2017-03-23T12:52:59.744Z",
                 "roleId": 1
             },
-            
+
             {
                 "id": 2,
                 "username": "Birdie",
@@ -31,7 +45,7 @@ user table.
                 "updatedAt": "2017-03-23T12:52:59.744Z",
                 "roleId": 2
             },
-            
+
             {
                 "id": 3,
                 "username": "Fox",
@@ -75,7 +89,7 @@ details.
         }
 
 ## User Collection [api/users/login]
-            
+
 ### Logs in a User [PUT]
 
 You can login a user. This is a POST request that logins in a user by
@@ -114,9 +128,18 @@ the new value. It returns a success message.
 
 + Request (application/json)
 
-        {
-            "username": "Reshy"
-        }
+    + Header
+
+            {
+                "x-access-token": token
+            }
+
+    + Body
+
+
+            {
+                "username": "Reshy"
+            }
 
 + Response 200 (application/json)
 
@@ -129,6 +152,14 @@ the new value. It returns a success message.
 You can find a user by their id. This is a GET request that takes in
 a parameter (id) and finds a user that matches that id. It returns
 the found user object.
++ Request (application/json)
+
+    + Header
+
+            {
+                "x-access-token": token
+            }
+
 
 + Response 200 (application/json)
 
@@ -142,17 +173,24 @@ the found user object.
             "roleId": 2
         }
 
-            
+
 ### Deletes a User [DELETE]
 
 You can delete a User. This is a DELETE request that takes in a
 parameter (id) and deletes the user that matches that id. It returns
 a success message.
 
++ Request (application/json)
+
+    + Header
+
+            {
+                "x-access-token": token
+            }
 
 + Response 201 (application/json)
 
-        { 
+        {
             message: 'User successfully deleted'
         }
 
@@ -163,6 +201,14 @@ a success message.
 You can find a user by their username. This is a GET request that takes in
 a username query and finds a user that matches that username. It returns
 the found user object.
+
++ Request (application/json)
+
+    + Header
+
+            {
+                "x-access-token": token
+            }
 
 + Response 200 (application/json)
 
@@ -185,8 +231,16 @@ the found user object.
 You can view all documents. This is a GET request that returns all records in the
 document table.
 
++ Request (application/json)
+
+    + Header
+
+            {
+                "x-access-token": token
+            }
+
 + Response 201 (application/json)
-        
+
         [
             {
                 "id": 1,
@@ -217,11 +271,19 @@ preference. If access is not specified, private is the default value.
 
 + Request (application/json)
 
-        {
-            "title": "Clouds"
-            "content": "The origin of the term cloud can be found in the old English clud or clod, meaning a hill or a mass of rock.",
-            "access": "private"
-        }
+    + Header
+
+            {
+                "x-access-token": token
+            }
+
+    + Body
+
+            {
+                "title": "Clouds"
+                "content": "The origin of the term cloud can be found in the old English clud or clod, meaning a hill or a mass of rock.",
+                "access": "private"
+            }
 
 + Response 201 (application/json)
 
@@ -237,7 +299,7 @@ preference. If access is not specified, private is the default value.
             "createdAt": "2017-03-29T09:10:02.413Z"
             }
         }
-        
+
 
 ## Document Collection [api/documents/4]
 
@@ -249,9 +311,17 @@ the new value. It returns a success message.
 
 + Request (application/json)
 
-        {
-            "title": "Cloudy"
-        }
+    + Header
+
+            {
+                "x-access-token": token
+            }
+
+    + Body
+
+            {
+                "title": "Cloudy"
+            }
 
 + Response 200 (application/json)
 
@@ -265,6 +335,14 @@ You can find a document by their id. This is a GET request that takes in
 a parameter (id) and finds the document that matches that id. It returns
 the found document object.
 
++ Request (application/json)
+
+    + Header
+
+            {
+                "x-access-token": token
+            }
+
 + Response 200 (application/json)
 
         {
@@ -277,17 +355,24 @@ the found document object.
             "userId": 4
         }
 
-            
+
 ### Deletes a Document [DELETE]
 
 You can delete a document. This is a DELETE request that takes in a
 parameter (id) and deletes the document that matches that id. It returns
 a success message.
 
++ Request (application/json)
+
+    + Header
+
+            {
+                "x-access-token": token
+            }
 
 + Response 201 (application/json)
 
-        { 
+        {
             "message": "Document successfully deleted"
         }
 
@@ -296,6 +381,14 @@ a success message.
 You can find a document by their title. This is a GET request that takes in
 a title query and finds a document that matches that title. It returns
 the found document object.
+
++ Request (application/json)
+
+    + Header
+
+            {
+                "x-access-token": token
+            }
 
 + Response 200 (application/json)
 
@@ -318,8 +411,16 @@ the found document object.
 You can view all roles. This is a GET request that returns all records in the
 role table.
 
++ Request (application/json)
+
+    + Header
+
+            {
+                "x-access-token": token
+            }
+
 + Response 201 (application/json)
-        
+
         [
             {
                 "id": 1,
@@ -343,9 +444,17 @@ by accepting a JSON object that has the new role name.
 
 + Request (application/json)
 
-        {
-            "name": "Support"
-        }
+    + Header
+
+            {
+                "x-access-token": token
+            }
+
+    + Body
+
+            {
+                "name": "Support"
+            }
 
 + Response 201 (application/json)
 

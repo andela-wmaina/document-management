@@ -17,10 +17,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 routes(app);
 
 app.get('/*', (req, res) => {
-    res.json({
-      message:" something awesome"
-    })
+  res.sendFile('Documentation.html', {
+    root: '.'
   })
+})
+
 app.listen(port, (eror) => {
 	if(eror) {
 		throw new Error(error)
