@@ -28,7 +28,7 @@ class UserController {
   */
   create(req, res) {
     if (controllerHelpers.validateInput(req.body)) {
-      return res.status(403).json({
+      return res.status(400).json({
         message: 'Invalid Input'
       });
     }
@@ -61,7 +61,7 @@ class UserController {
   */
   login(req, res) {
     if (controllerHelpers.validateInput(req.body)) {
-      return res.status(403).json({
+      return res.status(400).json({
         message: 'Invalid Input'
       });
     }
@@ -172,7 +172,7 @@ class UserController {
   */
   update(req, res) {
     if (controllerHelpers.validateInput(req.body)) {
-      return res.status(403).json({
+      return res.status(400).json({
         message: 'Invalid Input'
       });
     }

@@ -13,7 +13,7 @@ class DocumentController {
   */
   create(req, res) {
     if (controllerHelpers.validateInput(req.body)) {
-      return res.status(403).json({
+      return res.status(400).json({
         message: 'Invalid Input'
       });
     }
@@ -101,7 +101,7 @@ class DocumentController {
   */
   update(req, res) {
     if (controllerHelpers.validateInput(req.body)) {
-      return res.status(403).json({
+      return res.status(400).json({
         message: 'Invalid Input'
       });
     }

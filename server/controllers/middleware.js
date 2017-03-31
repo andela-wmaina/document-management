@@ -27,7 +27,7 @@ class MiddlewareController {
 
     jwt.verify(token, secretTokenKey, (error, decoded) => {
       if (error) {
-        return res.json({
+        return res.status(400).json({
           success: false,
           message: 'Token provided is incorrect'
         });
@@ -64,7 +64,7 @@ class MiddlewareController {
         }
 
         if (document.userId !== req.user.id && req.user.roleId !== 1) {
-          return res.json({
+          return res.status(403).json({
             message: 'You do not have the permission to make any changes to this document'
           });
         }
@@ -115,7 +115,7 @@ class MiddlewareController {
   */
   checkPermissionRoles(req, res, next) {
     if (req.user.roleId !== 1) {
-      return res.json({
+      return res.status(403).json({
         message: 'You do not have the permission to create a role'
       });
     }
