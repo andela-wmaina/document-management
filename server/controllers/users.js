@@ -11,6 +11,11 @@ const createToken = user => jwt.sign(user, secretTokenKey);
 // Hash the password with the salt
 const generateHash = password => bcrypt.hashSync(password, salt);
 
+const filterUser = (user) => {
+  const { id, username, email, createdAt, updatedAt, roleId } = user.dataValues;
+  return { id, username, email, createdAt, updatedAt, roleId };
+};
+
 /* Defines User Controller methods */
 class UserController {
 
@@ -39,12 +44,7 @@ class UserController {
         res.status(200).json({
           message: 'You have been successfully registered',
           token,
-          user: {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            role: user.roleId
-          }
+          user: filterUser(user)
         });
       })
       .catch((error) => {
@@ -88,12 +88,7 @@ class UserController {
           .json({
             message: 'You have been successfully logged in',
             token,
-            user: {
-              id: user.id,
-              username: user.username,
-              email: user.email,
-              role: user.roleId
-            }
+            user: filterUser(user)
           });
       })
       .catch((error) => {
@@ -129,15 +124,16 @@ class UserController {
     }
     return User
       .all()
-      .then((user) => {
-        res.status(200).json({
-          user: {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            role: user.roleId
-          }
-        });
+      .then((users) => {
+        if (!users) {
+          res.status(404).json('No user found');
+        }
+        const filter = (listOfUsers) => {
+          return listOfUsers.map((user) => {
+            return filterUser(user);
+          });
+        };
+        res.status(200).json(filter(users));
       })
       .catch((error) => {
         res.status(400).json(error);
@@ -160,14 +156,7 @@ class UserController {
             message: 'We could not find this user :(',
           });
         }
-        return res.status(200).json({
-          user: {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            role: user.roleId
-          }
-        });
+        return res.status(200).json(filterUser(user));
       })
       .catch((error) => {
         res.status(400).json(error);
@@ -235,7 +224,7 @@ class UserController {
     return User
       .findAll({
         where: {
-          username: req.query.username
+          username: req.query.q
         }
       })
       .then((user) => {
@@ -244,7 +233,7 @@ class UserController {
             message: 'We could not find this user :(',
           });
         }
-        return res.status(200).json(user);
+        return res.status(200).json(filterUser(user));
       })
       .catch((error) => {
         res.status(400).json(error);
