@@ -11,11 +11,6 @@ const createToken = user => jwt.sign(user, secretTokenKey);
 // Hash the password with the salt
 const generateHash = password => bcrypt.hashSync(password, salt);
 
-const filterUser = (user) => {
-  const { id, username, email, createdAt, updatedAt, roleId } = user.dataValues;
-  return { id, username, email, createdAt, updatedAt, roleId };
-};
-
 /* Defines User Controller methods */
 class UserController {
 
@@ -44,7 +39,7 @@ class UserController {
         res.status(200).json({
           message: 'You have been successfully registered',
           token,
-          user: filterUser(user)
+          user: controllerHelpers.filterUser(user)
         });
       })
       .catch((error) => {
@@ -88,7 +83,7 @@ class UserController {
           .json({
             message: 'You have been successfully logged in',
             token,
-            user: filterUser(user)
+            user: controllerHelpers.filterUser(user)
           });
       })
       .catch((error) => {
@@ -130,7 +125,7 @@ class UserController {
         }
         const filter = (listOfUsers) => {
           return listOfUsers.map((user) => {
-            return filterUser(user);
+            return controllerHelpers.filterUser(user);
           });
         };
         res.status(200).json(filter(users));
@@ -156,7 +151,7 @@ class UserController {
             message: 'We could not find this user :(',
           });
         }
-        return res.status(200).json(filterUser(user));
+        return res.status(200).json(controllerHelpers.filterUser(user));
       })
       .catch((error) => {
         res.status(400).json(error);
@@ -233,7 +228,7 @@ class UserController {
             message: 'We could not find this user :(',
           });
         }
-        return res.status(200).json(filterUser(user));
+        return res.status(200).json(controllerHelpers.filterUser(user));
       })
       .catch((error) => {
         res.status(400).json(error);
