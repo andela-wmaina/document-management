@@ -39,7 +39,12 @@ class UserController {
         res.status(200).json({
           message: 'You have been successfully registered',
           token,
-          userDetails: user
+          user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.roleId
+          }
         });
       })
       .catch((error) => {
@@ -83,7 +88,12 @@ class UserController {
           .json({
             message: 'You have been successfully logged in',
             token,
-            user
+            user: {
+              id: user.id,
+              username: user.username,
+              email: user.email,
+              role: user.roleId
+            }
           });
       })
       .catch((error) => {
@@ -120,7 +130,14 @@ class UserController {
     return User
       .all()
       .then((user) => {
-        res.status(200).json(user);
+        res.status(200).json({
+          user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.roleId
+          }
+        });
       })
       .catch((error) => {
         res.status(400).json(error);
@@ -143,7 +160,14 @@ class UserController {
             message: 'We could not find this user :(',
           });
         }
-        return res.status(200).json(user);
+        return res.status(200).json({
+          user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.roleId
+          }
+        });
       })
       .catch((error) => {
         res.status(400).json(error);
