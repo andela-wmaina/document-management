@@ -54,10 +54,6 @@ class DocumentPage extends React.Component {
     this.props.actions.loadDocuments();
   }
 
-  isEditing(event) {
-    console.log('yeah');
-  }
-
   onUpdate(event) {
     console.log('Yeah Twice');
   }
@@ -87,7 +83,7 @@ class DocumentPage extends React.Component {
               <ContentAdd />
             </FloatingActionButton>
             <Dialog
-              title="Dialog With Actions"
+              title="Add document"
               actions={actions}
               modal={false}
               open={this.state.open}
@@ -105,12 +101,12 @@ class DocumentPage extends React.Component {
           <div className="col-md-3" style={{ display: 'inline', height: 0 }}>
             <DocumentList
               docs={this.props.docs}
-              isEditing={this.isEditing}
               handleOpen={this.handleOpen}
               handleClose={this.handleClose}
               open={this.state.open}
               onUpdate={this.onUpdate}
               onChange={this.updateDocState}
+              actions={this.props.actions}
             />
           </div>
           <div

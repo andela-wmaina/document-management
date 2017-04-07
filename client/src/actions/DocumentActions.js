@@ -15,6 +15,10 @@ export function updateDocsSuccess(documents) {
   return { type: types.UPDATE_DOC_SUCCESS, documents };
 }
 
+export function deleteDocsSuccess(documents) {
+  return { type: types.DELETE_DOC_SUCCESS, document };
+}
+
 export function loadDocuments() {
   return function (dispatch) {
     return DocumentApi.getAllDocuments().then(documents => {
@@ -45,3 +49,12 @@ export function updateDocuments(doc) {
   };
 }
 
+export function deleteDocuments(id) {
+  return function (dispatch) {
+    return DocumentApi.deleteDocument(id).then(document => {
+      dispatch(deleteDocsSuccess(document));
+    }).catch(error => {
+      throw (error);
+    });
+  };
+}

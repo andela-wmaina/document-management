@@ -1,9 +1,8 @@
 import request from 'superagent';
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImlhdCI6MTQ5MTU1NTYyMn0.nkUjjYAcC24Sdtgo_5ei8pUR1FOy_yVn3BOGXq6JAnY';
+const token = process.env.TOKEN;
 
 class DocumentApi {
   static getAllDocuments() {
-    console.log("getting here");
     return request
       .get('/api/documents')
       .set('x-access-token', token)
@@ -41,6 +40,18 @@ class DocumentApi {
         content: doc.content,
         access: doc.access
       })
+      .then(function (response) {
+        return response.body;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  static deleteDocument(id) {
+    return request
+      .delete(`/api/documents/${id}`)
+      .set('x-access-token', token)
       .then(function (response) {
         return response.body;
       })

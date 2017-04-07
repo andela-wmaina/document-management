@@ -9,6 +9,8 @@ export default function DocumentReducer(state = InitialState.docs, action) {
       return Object.assign({}, action.documents);
     case types.UPDATE_DOC_SUCCESS:
       return Object.assign({}, action.documents);
+    case types.DELETE_DOC_SUCCESS:
+      return Object.assign({}, state, { isDeleting: false });
     default:
       return state;
   }
