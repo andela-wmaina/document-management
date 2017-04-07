@@ -1,5 +1,7 @@
 import request from 'superagent';
-const token = process.env.TOKEN;
+
+const checkToken = localStorage.getItem('token');
+const token = checkToken;
 
 class DocumentApi {
   static getAllDocuments() {
