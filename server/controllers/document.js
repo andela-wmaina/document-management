@@ -34,15 +34,15 @@ class DocumentController {
       .catch(error => res.status(400).json(error));
   }
 
-   /**
-    * list method
-    * Lists all documents found in the database
-    * @params req
-    * @params res
-    * @return { object } - A response to the user
-  */
+  /**
+   * list method
+   * Lists all documents found in the database
+   * @params req
+   * @params res
+   * @return { object } - A response to the user
+ */
   list(req, res) {
-    const privateDocs = req.data;
+    const myDocs = req.data;
     if (req.query.limit || req.query.offset) {
       return Document
         .findAll({
@@ -67,17 +67,20 @@ class DocumentController {
           access: 'public'
         }
       })
-      .then(document => res.status(200).json({ document, privateDocs }))
+      .then(document => {
+        myDocs.map(doc => document.push(doc));
+        res.status(200).json(document);
+      })
       .catch(error => res.status(400).json(error));
   }
 
-   /**
-    * find method
-    * Finds a document by the id specified
-    * @params req - document id
-    * @params res
-    * @return { object } - A response to the user
-  */
+  /**
+   * find method
+   * Finds a document by the id specified
+   * @params req - document id
+   * @params res
+   * @return { object } - A response to the user
+ */
   find(req, res) {
     return Document
       .findById(req.params.id)
@@ -92,13 +95,13 @@ class DocumentController {
       .catch(error => res.status(400).json(error));
   }
 
-   /**
-    * update method
-    * Updates a document
-    * @params req - document id, change to be made
-    * @params res
-    * @return { object } - A response to the user
-  */
+  /**
+   * update method
+   * Updates a document
+   * @params req - document id, change to be made
+   * @params res
+   * @return { object } - A response to the user
+ */
   update(req, res) {
     if (controllerHelpers.validateInput(req.body)) {
       return res.status(403).json({
@@ -120,13 +123,13 @@ class DocumentController {
       });
   }
 
-   /**
-    * delete method
-    * Deletes a document
-    * @params req - document id
-    * @params res
-    * @return { object } - A response to the user
-  */
+  /**
+   * delete method
+   * Deletes a document
+   * @params req - document id
+   * @params res
+   * @return { object } - A response to the user
+ */
   delete(req, res) {
     return Document
       .destroy({
@@ -140,13 +143,13 @@ class DocumentController {
       });
   }
 
-   /**
-    * findsByTitle method
-    * Finds a document by the title provided
-    * @params req - document title
-    * @params res
-    * @return { object } - A response to the user
-  */
+  /**
+   * findsByTitle method
+   * Finds a document by the title provided
+   * @params req - document title
+   * @params res
+   * @return { object } - A response to the user
+ */
   findByTitle(req, res) {
     return Document
       .findAll({
