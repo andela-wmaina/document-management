@@ -37,7 +37,9 @@ class DocumentApi {
       .put(`/api/documents/${doc.id}`)
       .set('x-access-token', token)
       .send({
-        doc: doc
+        title: doc.title,
+        content: doc.content,
+        access: doc.access
       })
       .then(function (response) {
         return response.body;

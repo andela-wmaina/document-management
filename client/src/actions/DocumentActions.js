@@ -37,7 +37,7 @@ export function addDocuments(doc) {
 
 export function updateDocuments(doc) {
   return function (dispatch) {
-    return documentApi.updateDocument(doc).then(documents => {
+    return DocumentApi.updateDocument(doc).then(documents => {
       dispatch(updateDocsSuccess(documents));
     }).catch(error => {
       throw (error);

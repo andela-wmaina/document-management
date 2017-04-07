@@ -14,6 +14,7 @@ class EditDocumentPage extends React.Component {
     this.state = {
       open: true,
       doc: {
+        id: props.doc.id,
         title: props.doc.title,
         content: props.doc.content,
         access: props.doc.access
@@ -36,8 +37,9 @@ class EditDocumentPage extends React.Component {
 
   saveDoc(event) {
     event.preventDefault();
-    this.props.actions.addDocuments(this.state.doc);
+    this.props.actions.updateDocuments(this.state.doc);
     this.props.actions.loadDocuments();
+    this.setState({ open: false });
   }
 
   handleOpen() {
