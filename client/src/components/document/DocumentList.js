@@ -57,7 +57,7 @@ class DocumentList extends React.Component {
           style={styles.gridList}
         >
           <Card style={styles.gridWidth} key={doc.id}>
-            <CardHeader title="user id" />
+            <CardHeader title={doc.userId} />
             <CardTitle title={doc.title} style={{ textAlign: 'center' }} />
             <CardText>
               {doc.content}

@@ -18,8 +18,7 @@ class EditDocumentPage extends React.Component {
         title: props.doc.title,
         content: props.doc.content,
         access: props.doc.access
-      },
-      isEditing: false
+      }
     };
     this.state.open = true;
     this.saveDoc = this.saveDoc.bind(this);
