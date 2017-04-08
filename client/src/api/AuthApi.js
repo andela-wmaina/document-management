@@ -3,7 +3,7 @@ import request from 'superagent';
 const checkToken = localStorage.getItem('token');
 const token = checkToken;
 
-class UserApi {
+class AuthApi {
     static registerUser(user) {
         return request
             .post('/api/users')
@@ -46,6 +46,7 @@ class UserApi {
                 console.log(error);
             });
     }
+
 }
 
-export default UserApi;
+export default AuthApi;
