@@ -115,7 +115,7 @@ class DocumentPage extends React.Component {
         </div>
         <div>
           <AutoComplete
-            hintText="Type 'r', case insensitive"
+            hintText="Search Documents"
             searchText={this.state.search}
             onUpdateInput={this.handleUpdateInput}
             onNewRequest={this.handleNewRequest}
