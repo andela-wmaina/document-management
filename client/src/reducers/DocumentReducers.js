@@ -11,6 +11,8 @@ export default function DocumentReducer(state = InitialState.docs, action) {
       return Object.assign({}, action.documents);
     case types.DELETE_DOC_SUCCESS:
       return Object.assign({}, state, { isDeleting: false });
+    case types.SEARCH_DOC_SUCCESS:
+      return action.documents;
     default:
       return state;
   }

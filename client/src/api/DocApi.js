@@ -61,6 +61,19 @@ class DocumentApi {
         console.log(error);
       });
   }
+
+  static searchDocument(title) {
+    return request
+      .get(`/api/search/documents?title=${title}`)
+      .set('x-access-token', token)
+      .then(function (response) {
+        console.log(response.body);
+        return response.body;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 }
 
 export default DocumentApi;

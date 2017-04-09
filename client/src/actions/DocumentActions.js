@@ -16,7 +16,11 @@ export function updateDocsSuccess(documents) {
 }
 
 export function deleteDocsSuccess(documents) {
-  return { type: types.DELETE_DOC_SUCCESS, document };
+  return { type: types.DELETE_DOC_SUCCESS, documents };
+}
+
+export function searchDocSuccess(documents) {
+  return { type: types.SEARCH_DOC_SUCCESS, documents };
 }
 
 export function loadDocuments() {
@@ -53,6 +57,16 @@ export function deleteDocuments(id) {
   return function (dispatch) {
     return DocumentApi.deleteDocument(id).then(document => {
       dispatch(deleteDocsSuccess(document));
+    }).catch(error => {
+      throw (error);
+    });
+  };
+}
+
+export function searchDocuments(title) {
+  return function (dispatch) {
+    return DocumentApi.searchDocument(title).then(document => {
+      dispatch(searchDocSuccess(document));
     }).catch(error => {
       throw (error);
     });
