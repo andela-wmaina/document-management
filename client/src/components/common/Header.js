@@ -15,17 +15,20 @@ const Header = ({ onLogout }) => {
     >
       <nav>
         <div className="top-bar" style={{ height: 0, paddingTop: 10, fontSize: 16, display: 'flex' }}>
-          <div style={{ marginRight: 1200, display: 'flex' }}>
+          <div style={{ marginRight: 1100, display: 'flex' }}>
             <FlatButton href="/" > DocMg </FlatButton>
             {Auth.checkAuthentication() ? (
-              <FlatButton href="/docs"> Document </FlatButton>
+              <div style={{ display: 'flex' }}>
+                <FlatButton href="/docs">Document</FlatButton>
+                <FlatButton href="/profile">Profile</FlatButton>
+              </div>
             ) : (null)}
             {Auth.checkAuthentication() ? (
-              <div style={{ marginLeft: 1100, display: 'flex' }}>
-              <FlatButton onTouchTap={onLogout}>Sign Out</FlatButton>
+              <div style={{ marginLeft: 980, display: 'flex' }}>
+                <FlatButton onTouchTap={onLogout}>Sign Out</FlatButton>
               </div>
             ) : (
-              <div style={{ marginLeft: 1010, display: 'flex' }}>
+              <div style={{ marginLeft: 980, display: 'flex' }}>
                 <FlatButton href="/signup">Sign Up</FlatButton>
                 <FlatButton href="/signin">Sign In</FlatButton>
               </div>

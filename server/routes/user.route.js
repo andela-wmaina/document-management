@@ -14,6 +14,9 @@ Router.route('/users')
 /* authentication middleware */
 Router.use(Middleware.authMiddleware);
 
+Router.route('/users/logout')
+  .post(User.logout);
+
 /* /users/:id routes */
 Router.route('/users/:id')
   .delete(Middleware.checkPermissionUsers, User.delete)
