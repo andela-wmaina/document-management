@@ -9,6 +9,10 @@ export default function usersReducer(state = InitialState.users, action) {
       return Object.assign({}, action.user);
     case types.LOGOUT_USER_SUCCESS:
       return Object.assign({});
+    case types.FETCH_USER_SUCCESS:
+      return Object.assign({}, action.user);
+    case types.UPDATE_USER_SUCCESS:
+      return Object.assign({}, action.user);
     default:
       return state;
   }

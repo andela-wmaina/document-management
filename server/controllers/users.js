@@ -91,6 +91,12 @@ class UserController {
       });
   }
 
+  logout(req, res) {
+    res.status(200).json({
+      message: 'You have been logged out'
+    });
+  }
+
    /**
     * list method
     * Lists all users
