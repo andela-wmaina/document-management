@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Card, CardActions, CardHeader, CardTitle, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import CircularProgress from 'material-ui/CircularProgress';
 import { GridList } from 'material-ui/GridList';
 import * as docActions from '../../actions/DocumentActions';
 
@@ -20,6 +21,10 @@ const styles = {
   gridWidth: {
     width: 300,
     marginLeft: 30
+  },
+  spinner: {
+    textAlign: 'center',
+    marginTop: '5%'
   }
 };
 
@@ -39,41 +44,52 @@ class DocumentList extends React.Component {
     const actions = [
       <FlatButton
         label="Cancel"
-        primary={true}
+        primary
         onTouchTap={this.props.handleClose}
       />,
       <FlatButton
         label="Submit"
-        primary={true}
-        keyboardFocused={true}
+        primary
+        keyboardFocused
         onTouchTap={this.props.handleClose}
       />,
     ];
+    console.log('doc list', this.props.docs);
     return (
-      <ul style={styles.root}>{this.props.docs.map(doc =>
-        <GridList
-          cellHeight={180}
-          style={styles.gridList}
-        >
-          <Card style={styles.gridWidth} key={doc.id}>
-            <CardHeader title={doc.userId} />
-            <CardTitle title={doc.title} style={{ textAlign: 'center' }} />
-            <CardText>
-              {doc.content}
-            </CardText>
-            <CardActions>
-              <div>
-                <FlatButton href={`/docs/${doc.id}`} label="EDIT" />
-                <FlatButton label="DELETE" onTouchTap={() => this.handleDelete(doc.id)} />
-              </div>
-            </CardActions>
-          </Card>
-        </GridList>
-      )}
-      </ul>
+      this.props.docs.length ?
+        (<ul style={styles.root}>{this.props.docs.map(doc =>
+          <GridList
+            cellHeight={180}
+            style={styles.gridList}
+            key={doc.id}
+          >
+            <Card style={styles.gridWidth}>
+              <CardHeader title={doc.owner} />
+              <CardTitle title={doc.title} style={{ textAlign: 'center' }} />
+              <CardText>
+                {doc.content}
+              </CardText>
+              <CardActions>
+                <div>
+                  <FlatButton href={`/docs/${doc.id}`} label="EDIT" />
+                  <FlatButton label="DELETE" onTouchTap={() => this.handleDelete(doc.id)} />
+                </div>
+              </CardActions>
+            </Card>
+          </GridList>
+        )}
+        </ul>) : (
+          <div style={styles.spinner} >
+            <CircularProgress />
+          </div>
+        )
     );
   }
 }
+
+DocumentList.defaultProps = {
+  docs: []
+};
 
 DocumentList.propTypes = {
   docs: PropTypes.array.isRequired,

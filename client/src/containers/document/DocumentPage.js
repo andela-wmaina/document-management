@@ -78,13 +78,13 @@ class DocumentPage extends React.Component {
     const actions = [
       <FlatButton
         label="Cancel"
-        primary={true}
+        primary
         onTouchTap={this.handleClose}
       />,
       <FlatButton
         label="Submit"
-        primary={true}
-        keyboardFocused={true}
+        primary
+        keyboardFocused
         onTouchTap={() => {
           this.saveDoc();
           this.handleClose();
@@ -95,7 +95,7 @@ class DocumentPage extends React.Component {
       <div>
         <div style={{ marginTop: 10, marginLeft: 1380 }}>
           <div>
-            <FloatingActionButton mini={true} style={style} onTouchTap={this.handleOpen}>
+            <FloatingActionButton mini style={style} onTouchTap={this.handleOpen}>
               <ContentAdd />
             </FloatingActionButton>
             <Dialog
@@ -120,7 +120,7 @@ class DocumentPage extends React.Component {
             onUpdateInput={this.handleUpdateInput}
             onNewRequest={this.handleNewRequest}
             dataSource={this.props.docs}
-            openOnFocus={true}
+            openOnFocus
           />
           <FlatButton
             label="Search"
@@ -164,7 +164,7 @@ function mapStateToProps(state) {
     };
   }
   return {
-    docs: [{ title: '', content: '', access: '' }]
+    docs: []
   };
 }
 

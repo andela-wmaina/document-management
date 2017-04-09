@@ -48,7 +48,7 @@ class SignUpPage extends React.Component {
         if (res.message) {
           browserHistory.push('/docs');
           localStorage.setItem('token', res.token);
-          localStorage.setItem('userDetails', res.user.id);
+          localStorage.setItem('userDetails', res.userDetails.id);
         }
         // Add functionality for error handling messages
         console.log(res);
@@ -83,7 +83,7 @@ const mapStateToProps = (state) => {
     };
   }
   return {
-    user: [{ username: '', email: '', password: '' }]
+    user: []
   };
 };
 

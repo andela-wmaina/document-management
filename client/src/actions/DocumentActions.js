@@ -3,23 +3,23 @@
 import * as types from './ActionTypes';
 import DocumentApi from '../api/DocApi';
 
-export function loadDocsSuccess(documents) {
+function loadDocsSuccess(documents) {
   return { type: types.LOAD_DOC_SUCCESS, documents };
 }
 
-export function createDocsSuccess(documents) {
+function createDocsSuccess(documents) {
   return { type: types.CREATE_DOC_SUCCESS, documents };
 }
 
-export function updateDocsSuccess(documents) {
+function updateDocsSuccess(documents) {
   return { type: types.UPDATE_DOC_SUCCESS, documents };
 }
 
-export function deleteDocsSuccess(documents) {
+function deleteDocsSuccess(documents) {
   return { type: types.DELETE_DOC_SUCCESS, documents };
 }
 
-export function searchDocSuccess(documents) {
+function searchDocSuccess(documents) {
   return { type: types.SEARCH_DOC_SUCCESS, documents };
 }
 
