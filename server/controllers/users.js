@@ -23,7 +23,7 @@ class UserController {
   */
   create(req, res) {
     if (controllerHelpers.validateInput(req.body)) {
-      return res.status(403).json({
+      return res.status(400).json({
         message: 'Invalid Input'
       });
     }
@@ -39,7 +39,7 @@ class UserController {
         res.status(200).json({
           message: 'You have been successfully registered',
           token,
-          userDetails: user
+          user: controllerHelpers.filterUser(user)
         });
       })
       .catch((error) => {
@@ -56,7 +56,7 @@ class UserController {
   */
   login(req, res) {
     if (controllerHelpers.validateInput(req.body)) {
-      return res.status(403).json({
+      return res.status(400).json({
         message: 'Invalid Input'
       });
     }
@@ -83,7 +83,7 @@ class UserController {
           .json({
             message: 'You have been successfully logged in',
             token,
-            user
+            user: controllerHelpers.filterUser(user)
           });
       })
       .catch((error) => {
@@ -119,8 +119,16 @@ class UserController {
     }
     return User
       .all()
-      .then((user) => {
-        res.status(200).json(user);
+      .then((users) => {
+        if (!users) {
+          res.status(404).json('No user found');
+        }
+        const filter = (listOfUsers) => {
+          return listOfUsers.map((user) => {
+            return controllerHelpers.filterUser(user);
+          });
+        };
+        res.status(200).json(filter(users));
       })
       .catch((error) => {
         res.status(400).json(error);
@@ -143,7 +151,7 @@ class UserController {
             message: 'We could not find this user :(',
           });
         }
-        return res.status(200).json(user);
+        return res.status(200).json(controllerHelpers.filterUser(user));
       })
       .catch((error) => {
         res.status(400).json(error);
@@ -159,7 +167,7 @@ class UserController {
   */
   update(req, res) {
     if (controllerHelpers.validateInput(req.body)) {
-      return res.status(403).json({
+      return res.status(400).json({
         message: 'Invalid Input'
       });
     }
@@ -211,7 +219,7 @@ class UserController {
     return User
       .findAll({
         where: {
-          username: req.query.username
+          username: req.query.q
         }
       })
       .then((user) => {
@@ -220,7 +228,7 @@ class UserController {
             message: 'We could not find this user :(',
           });
         }
-        return res.status(200).json(user);
+        return res.status(200).json(controllerHelpers.filterUser(user));
       })
       .catch((error) => {
         res.status(400).json(error);

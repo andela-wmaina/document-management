@@ -13,7 +13,7 @@ class DocumentController {
   */
   create(req, res) {
     if (controllerHelpers.validateInput(req.body)) {
-      return res.status(403).json({
+      return res.status(400).json({
         message: 'Invalid Input'
       });
     }
@@ -42,7 +42,7 @@ class DocumentController {
     * @return { object } - A response to the user
   */
   list(req, res) {
-    const privateDocs = req.data;
+    const myDocs = req.data;
     if (req.query.limit || req.query.offset) {
       return Document
         .findAll({
@@ -67,7 +67,7 @@ class DocumentController {
           access: 'public'
         }
       })
-      .then(document => res.status(200).json({ document, privateDocs }))
+      .then(document => res.status(200).json({ document, myDocs }))
       .catch(error => res.status(400).json(error));
   }
 
@@ -101,7 +101,7 @@ class DocumentController {
   */
   update(req, res) {
     if (controllerHelpers.validateInput(req.body)) {
-      return res.status(403).json({
+      return res.status(400).json({
         message: 'Invalid Input'
       });
     }
@@ -161,6 +161,33 @@ class DocumentController {
           });
         }
         return res.status(200).json(document);
+      })
+      .catch((error) => {
+        res.status(400).json(error);
+      });
+  }
+
+  /**
+    * findUserDocs method
+    * Finds all documents of the user provided
+    * @params req - user id
+    * @params res
+    * @return { object } - all documents belonging to that user
+  */
+  findUserDocs(req, res) {
+    return Document
+      .findAll({
+        where: {
+          userId: req.params.id
+        }
+      })
+      .then((documents) => {
+        if (documents.length === 0) {
+          return res.status(404).json({
+            message: 'Sorry, No document found'
+          });
+        }
+        return res.status(200).json(documents);
       })
       .catch((error) => {
         res.status(400).json(error);
