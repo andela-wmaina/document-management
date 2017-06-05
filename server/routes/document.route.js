@@ -17,7 +17,4 @@ Router.route('/documents/:id')
 Router.route('/search/documents')
   .get(Document.findByTitle);
 
-Router.route('/users/:id/documents')
-  .get(Document.findUserDocs);
-
 module.exports.DocumentRouter = Router;

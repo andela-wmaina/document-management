@@ -13,7 +13,7 @@ class RolesController {
   */
   create(req, res) {
     if (controllerHelpers.validateInput(req.body)) {
-      return res.status(400).json({
+      return res.status(403).json({
         message: 'Invalid Input'
       });
     }
