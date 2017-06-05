@@ -19,18 +19,6 @@ class controllerHelpers {
         return invalid;
       }
     }
-
-   /**
-    * filterUser method
-    * Filters user details and removes password property
-    * from return object
-    * @params data - user request body
-    * @returns - filtered user object
-    */
-    filterUser(user) {
-      const { id, username, email, createdAt, updatedAt, roleId } = user.dataValues;
-      return { id, username, email, createdAt, updatedAt, roleId };
-    }
 }
 
 module.exports = new controllerHelpers();
