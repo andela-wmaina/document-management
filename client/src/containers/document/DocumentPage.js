@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import Dialog from 'material-ui/Dialog';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import FlatButton from 'material-ui/FlatButton';
+import AutoComplete from 'material-ui/AutoComplete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import DocumentList from '../../components/document/DocumentList';
 import AddDocument from '../../components/document/AddDocument';
@@ -25,13 +26,16 @@ class DocumentPage extends React.Component {
         content: '',
         access: ''
       },
-      isEditing: false
+      search: ''
     };
 
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.saveDoc = this.saveDoc.bind(this);
     this.updateDocState = this.updateDocState.bind(this);
+    this.handleNewRequest = this.handleNewRequest.bind(this);
+    this.handleUpdateInput = this.handleUpdateInput.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   handleOpen() {
@@ -54,21 +58,33 @@ class DocumentPage extends React.Component {
     this.props.actions.loadDocuments();
   }
 
-  onUpdate(event) {
-    console.log('Yeah Twice');
+  handleSearch(event) {
+    this.props.actions.searchDocuments(this.state.search);
+  }
+
+  handleUpdateInput(event) {
+    this.setState({
+      search: event
+    });
+  }
+
+  handleNewRequest() {
+    this.setState({
+      search: '',
+    });
   }
 
   render() {
     const actions = [
       <FlatButton
         label="Cancel"
-        primary={true}
+        primary
         onTouchTap={this.handleClose}
       />,
       <FlatButton
         label="Submit"
-        primary={true}
-        keyboardFocused={true}
+        primary
+        keyboardFocused
         onTouchTap={() => {
           this.saveDoc();
           this.handleClose();
@@ -79,7 +95,7 @@ class DocumentPage extends React.Component {
       <div>
         <div style={{ marginTop: 10, marginLeft: 1380 }}>
           <div>
-            <FloatingActionButton mini={true} style={style} onTouchTap={this.handleOpen}>
+            <FloatingActionButton mini style={style} onTouchTap={this.handleOpen}>
               <ContentAdd />
             </FloatingActionButton>
             <Dialog
@@ -96,6 +112,20 @@ class DocumentPage extends React.Component {
               />
             </Dialog>
           </div>
+        </div>
+        <div>
+          <AutoComplete
+            hintText="Search Documents"
+            searchText={this.state.search}
+            onUpdateInput={this.handleUpdateInput}
+            onNewRequest={this.handleNewRequest}
+            dataSource={this.props.docs}
+            openOnFocus
+          />
+          <FlatButton
+            label="Search"
+            onTouchTap={this.handleSearch}
+          />
         </div>
         <div className="col-md-12" style={{ height: 0 }}>
           <div className="col-md-3" style={{ display: 'inline', height: 0 }}>
@@ -134,7 +164,7 @@ function mapStateToProps(state) {
     };
   }
   return {
-    docs: [{ title: '', content: '', access: '' }]
+    docs: []
   };
 }
 

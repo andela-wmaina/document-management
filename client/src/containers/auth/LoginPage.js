@@ -13,7 +13,6 @@ const style = {
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       errors: {
         email: '',
@@ -44,8 +43,8 @@ class LoginPage extends React.Component {
     this.props.actions.loginUser(this.state.user)
       .then((res) => {
         if (res.message) {
-          console.log(res.message);
           localStorage.setItem('token', res.token);
+          localStorage.setItem('userDetails', res.user.id);
           browserHistory.push('/');
         }
         // Add functionality for error handling messages
@@ -81,7 +80,7 @@ const mapStateToProps = (state) => {
     };
   }
   return {
-    user: [{ username: '', password: '' }]
+    user: []
   };
 };
 
