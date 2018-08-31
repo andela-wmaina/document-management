@@ -25,6 +25,7 @@ const SignUpForm = ({ onChange, onSubmit, user, errors }) => (
       />
       <br />
       <TextField
+        type="password"
         floatingLabelText="Password"
         name="password"
         errorText={errors.password}
