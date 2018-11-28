@@ -25,12 +25,9 @@ class LoginPage extends React.Component {
         password: ''
       }
     };
-
-    this.submitUser = this.submitUser.bind(this);
-    this.changeUser = this.changeUser.bind(this);
   }
 
-  changeUser(event) {
+  changeUser = (event) => {
     const field = event.target.name;
     const user = this.state.user;
     user[field] = event.target.value;
@@ -39,19 +36,18 @@ class LoginPage extends React.Component {
     });
   }
 
-  submitUser(event) {
+  submitUser = (event) => {
     event.preventDefault();
+    console.log(this.props, 'this.props.history')
     this.props.actions.loginUser(this.state.user)
-      .then((res) => {
+      .then(res => {
         if (res.message) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('userDetails', res.user.id);
-          this.props.history.push('/');
+          this.props.router.push('/docs');
         }
-        // Add functionality for error handling messages
-        console.log(res);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log('error', error);
       });
   }

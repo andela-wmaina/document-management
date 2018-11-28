@@ -28,9 +28,6 @@ class SignUpPage extends React.Component {
         password: ''
       }
     };
-
-    this.submitUser = this.submitUser.bind(this);
-    this.changeUser = this.changeUser.bind(this);
   }
 
   changeUser(event) {
@@ -45,16 +42,14 @@ class SignUpPage extends React.Component {
   submitUser(event) {
     event.preventDefault();
     this.props.actions.registerUser(this.state.user)
-      .then((res) => {
+      .then(res => {
         if (res.message) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('userDetails', res.userDetails.id);
           this.props.history.push('/docs');
         }
-        // Add functionality for error handling messages
-        console.log(res);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log('error', error);
       });
   }

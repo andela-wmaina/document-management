@@ -20,8 +20,14 @@ const Header = ({ onLogout }) => {
       iconClassNameRight="muidocs-icon-navigation-expand-more"
       showMenuIconButton={false}>
       <Toolbar>
-        <Button color="inherit" href="/signup">Sign Up</Button>
-        <Button color="inherit" href="/signin">Sign In</Button>
+        {
+          Auth.isUserAuthenticated() ?
+            <Button color="inherit" onClick={() => onLogout()}>Sign Out</Button> :
+            <div>
+              <Button color="inherit" href="/signup">Sign Up</Button>
+              <Button color="inherit" href="/signin">Sign In</Button>
+            </div>
+        }
       </Toolbar>
     </AppBar>
   );

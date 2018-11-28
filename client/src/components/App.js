@@ -15,23 +15,11 @@ class App extends React.Component {
     this.state = {
       user: {}
     };
-    this.logoutUser = this.logoutUser.bind(this);
   }
 
-  logoutUser(event) {
-    event.preventDefault();
-    this.props.actions.logoutUser(this.state.user)
-      .then((res) => {
-        if (res.message) {
-          localStorage.removeItem('token');
-          this.props.history.push('/');
-        }
-        // Add functionality for error handling messages
-        console.log(res.message);
-      })
-      .catch((error) => {
-        console.log('error', error);
-      });
+  logoutUser = () => {
+    localStorage.removeItem('token');
+    this.props.router.push('/');
   }
 
   render() {
