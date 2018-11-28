@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Router, browserHistory } from 'react-router';
+
 import SignUpForm from '../../components/auth/SignUpForm';
 import * as AuthActions from '../../actions/AuthActions';
 
@@ -46,9 +47,9 @@ class SignUpPage extends React.Component {
     this.props.actions.registerUser(this.state.user)
       .then((res) => {
         if (res.message) {
-          browserHistory.push('/docs');
           localStorage.setItem('token', res.token);
           localStorage.setItem('userDetails', res.userDetails.id);
+          this.props.history.push('/docs');
         }
         // Add functionality for error handling messages
         console.log(res);

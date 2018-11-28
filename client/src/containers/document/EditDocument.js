@@ -1,9 +1,12 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import _ from 'lodash';
+
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
-import _ from 'lodash';
+
 import * as courseActions from '../../actions/DocumentActions';
 import DocumentList from '../../components/document/DocumentList';
 import EditDocument from '../../components/document/EditDocument';
@@ -69,13 +72,13 @@ class EditDocumentPage extends React.Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.handleClose}
+        onClick={this.handleClose}
       />,
       <FlatButton
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleClose}
+        onClick={this.handleClose}
       />,
     ];
 

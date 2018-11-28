@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import '../static/stylesheets/landing_page.scss';
 
 class HomePage extends React.Component {
   render() {
     return (
-      <div style={{ textAlign: 'center', marginTop: 50 }}>
+      <div className="landing-page">
         <h4><i>WELCOME TO YOUR DOCUMENT MANAGEMENT APP </i></h4>
       </div>
     );

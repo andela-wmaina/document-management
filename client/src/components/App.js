@@ -1,15 +1,13 @@
 // src/components/App.js
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import { bindActionCreators } from 'redux';
-import { Router, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import Header from './common/Header';
 import * as AuthActions from '../actions/AuthActions';
-
-injectTapEventPlugin();
 
 class App extends React.Component {
   constructor(props) {
@@ -26,7 +24,7 @@ class App extends React.Component {
       .then((res) => {
         if (res.message) {
           localStorage.removeItem('token');
-          browserHistory.push('/');
+          this.props.history.push('/');
         }
         // Add functionality for error handling messages
         console.log(res.message);
@@ -51,7 +49,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  children: PropTypes.object.isRequired,
+  children: PropTypes.object,
   actions: PropTypes.object.isRequired
 };
 

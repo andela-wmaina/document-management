@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router';
+
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import User from '../../components/user/User';
@@ -67,13 +68,13 @@ class UserPage extends React.Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.handleClose}
+        onClick={this.handleClose}
       />,
       <FlatButton
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={() => {
+        onClick={() => {
           this.saveUser();
           this.handleClose();
         }}
@@ -89,7 +90,7 @@ class UserPage extends React.Component {
           <br />
           <h3><b> Email </b></h3> { user.email }
           <div style={{ marginTop: 50 }}>
-            <FlatButton onTouchTap={this.handleOpen}>
+            <FlatButton onClick={this.handleOpen}>
               EDIT
             </FlatButton>
             <Dialog

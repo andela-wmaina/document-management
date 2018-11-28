@@ -1757,7 +1757,7 @@
             // Make collapse buttons clickable
             var buttons = document.querySelectorAll('.collapse-button');
             for (i = 0; i < buttons.length; i++) {
-                buttons[i].onclick = toggleCollapseButton;
+                buttons[i].onClick = toggleCollapseButton;
 
                 // Show by default? Then toggle now.
                 if (buttons[i].className.indexOf('show') !== -1) {
@@ -1769,7 +1769,7 @@
             for (i = 0; i < responseCodes.length; i++) {
                 var tabButtons = childrenByClass(responseCodes[i], 'tab-button');
                 for (j = 0; j < tabButtons.length; j++) {
-                    tabButtons[j].onclick = toggleTabButton;
+                    tabButtons[j].onClick = toggleTabButton;
 
                     // Show by default?
                     if (j === 0) {
@@ -1781,7 +1781,7 @@
             // Make nav items clickable to collapse/expand their content.
             var navItems = document.querySelectorAll('nav .resource-group .heading');
             for (i = 0; i < navItems.length; i++) {
-                navItems[i].onclick = toggleCollapseNav;
+                navItems[i].onClick = toggleCollapseNav;
 
                 // Show all by default
                 toggleCollapseNav({ target: navItems[i].children[0] });

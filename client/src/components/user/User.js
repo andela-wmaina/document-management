@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -44,9 +46,9 @@ class UpdateUser extends React.Component {
 }
 
 UpdateUser.propTypes = {
-  user: React.PropTypes.object,
-  onSave: React.PropTypes.func,
-  onChange: React.PropTypes.func
+  user: PropTypes.object,
+  onSave: PropTypes.func,
+  onChange: PropTypes.func
 };
 
 export default UpdateUser;
