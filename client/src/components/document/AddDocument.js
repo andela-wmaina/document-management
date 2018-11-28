@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 const style = {
@@ -50,9 +52,9 @@ class AddDocument extends React.Component {
 }
 
 AddDocument.propTypes = {
-  doc: React.PropTypes.object,
-  onSave: React.PropTypes.func,
-  onChange: React.PropTypes.func
+  doc: PropTypes.object,
+  onSave: PropTypes.func,
+  onChange: PropTypes.func
 };
 
 export default AddDocument;

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
 import App from './components/App';
 import DocumentPage from './containers/document/DocumentPage';
 import EditDocumentPage from './containers/document/EditDocument';
@@ -9,13 +10,19 @@ import LoginPage from './containers/auth/LoginPage';
 import User from './containers/user/User';
 
 export default (
-  <Route path="/" component={App}>
-    <IndexRoute component={HomePage} />
-    <Route path="/docs" component={DocumentPage} >
-      <Route path="/docs/:id" component={EditDocumentPage} />
-    </Route>
-    <Route path="/signup" component={SignUpPage} />
-    <Route path="/signin" component={LoginPage} />
-    <Route path="/profile" component={User} />
-  </Route>
+  <div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/" component={App}>
+          <Route path="/" component={HomePage} />
+          <Route path="/docs" component={DocumentPage} >
+            <Route path="/docs/:id" component={EditDocumentPage} />
+          </Route>
+          <Route path="/signup" component={SignUpPage} />
+          <Route path="/signin" component={LoginPage} />
+          <Route path="/profile" component={User} />
+        </Route>
+      </Switch>
+    </BrowserRouter>
+  </div>
 );

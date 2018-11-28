@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router';
+
 import LoginForm from '../../components/auth/LoginForm';
 import * as AuthActions from '../../actions/AuthActions';
 import Header from '../../components/common/Header';
@@ -45,7 +46,7 @@ class LoginPage extends React.Component {
         if (res.message) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('userDetails', res.user.id);
-          browserHistory.push('/');
+          this.props.history.push('/');
         }
         // Add functionality for error handling messages
         console.log(res);

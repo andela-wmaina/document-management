@@ -1,6 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 import Dialog from 'material-ui/Dialog';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -79,13 +81,13 @@ class DocumentPage extends React.Component {
       <FlatButton
         label="Cancel"
         primary
-        onTouchTap={this.handleClose}
+        onClick={this.handleClose}
       />,
       <FlatButton
         label="Submit"
         primary
         keyboardFocused
-        onTouchTap={() => {
+        onClick={() => {
           this.saveDoc();
           this.handleClose();
         }}
@@ -95,7 +97,7 @@ class DocumentPage extends React.Component {
       <div>
         <div style={{ marginTop: 10, marginLeft: 1380 }}>
           <div>
-            <FloatingActionButton mini style={style} onTouchTap={this.handleOpen}>
+            <FloatingActionButton mini style={style} onClick={this.handleOpen}>
               <ContentAdd />
             </FloatingActionButton>
             <Dialog
@@ -124,7 +126,7 @@ class DocumentPage extends React.Component {
           />
           <FlatButton
             label="Search"
-            onTouchTap={this.handleSearch}
+            onClick={this.handleSearch}
           />
         </div>
         <div className="col-md-12" style={{ height: 0 }}>

@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+
 import { Card, CardActions, CardHeader, CardTitle, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -45,13 +46,13 @@ class DocumentList extends React.Component {
       <FlatButton
         label="Cancel"
         primary
-        onTouchTap={this.props.handleClose}
+        onClick={this.props.handleClose}
       />,
       <FlatButton
         label="Submit"
         primary
         keyboardFocused
-        onTouchTap={this.props.handleClose}
+        onClick={this.props.handleClose}
       />,
     ];
     console.log('doc list', this.props.docs);
@@ -72,7 +73,7 @@ class DocumentList extends React.Component {
               <CardActions>
                 <div>
                   <FlatButton href={`/docs/${doc.id}`} label="EDIT" />
-                  <FlatButton label="DELETE" onTouchTap={() => this.handleDelete(doc.id)} />
+                  <FlatButton label="DELETE" onClick={() => this.handleDelete(doc.id)} />
                 </div>
               </CardActions>
             </Card>
