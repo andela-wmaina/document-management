@@ -2,6 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from "react-router";
 
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
@@ -13,28 +14,32 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Auth from '../../modules/Auth';
 import '../../static/stylesheets/landing_page.scss';
 
-const Header = ({ onLogout }) => {
-  return (
-    <AppBar
-      title="Doc Manage"
-      iconClassNameRight="muidocs-icon-navigation-expand-more"
-      showMenuIconButton={false}>
-      <Toolbar>
-        {
-          Auth.isUserAuthenticated() ?
-            <Button color="inherit" onClick={() => onLogout()}>Sign Out</Button> :
-            <div>
-              <Button color="inherit" href="/signup">Sign Up</Button>
-              <Button color="inherit" href="/signin">Sign In</Button>
-            </div>
-        }
-      </Toolbar>
-    </AppBar>
-  );
+class Header extends React.Component {
+  logoutUser = () => {
+    localStorage.removeItem('token');
+    this.props.history.push('/');
+  }
+
+  render() {
+    console.log('here')
+    return (
+      <AppBar
+        title="Doc Manage"
+        iconClassNameRight="muidocs-icon-navigation-expand-more"
+        showMenuIconButton={false}>
+        <Toolbar>
+          {
+            Auth.isUserAuthenticated() ?
+              <Button color="inherit" onClick={() => this.logoutUser()}>Sign Out</Button> :
+              <div>
+                <Button color="inherit" href="/signup">Sign Up</Button>
+                <Button color="inherit" href="/signin">Sign In</Button>
+              </div>
+          }
+        </Toolbar>
+      </AppBar>
+    );
+  }
 };
 
-Header.propTypes = {
-  onLogout: PropTypes.func.isRequired
-};
-
-export default Header;
+export default withRouter(Header);

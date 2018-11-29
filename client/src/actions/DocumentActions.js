@@ -24,7 +24,7 @@ function searchDocSuccess(documents) {
 }
 
 export function loadDocuments() {
-  return function (dispatch) {
+  return dispatch => {
     return DocumentApi.getAllDocuments().then(documents => {
       dispatch(loadDocsSuccess(documents));
     }).catch(error => {

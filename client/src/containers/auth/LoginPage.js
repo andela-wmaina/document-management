@@ -37,14 +37,15 @@ class LoginPage extends React.Component {
   }
 
   submitUser = (event) => {
-    event.preventDefault();
-    console.log(this.props, 'this.props.history')
-    this.props.actions.loginUser(this.state.user)
+    event.preventDefault()
+    const {actions, history} = this.props;
+
+    actions.loginUser(this.state.user)
       .then(res => {
         if (res.message) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('userDetails', res.user.id);
-          this.props.router.push('/docs');
+          history.push('/docs');
         }
       })
       .catch(error => {
@@ -53,6 +54,7 @@ class LoginPage extends React.Component {
   }
 
   render() {
+    console.log(this.props, 'props')
     return (
       <div style={{ marginLeft: 550, marginTop: 70 }}>
         <LoginForm

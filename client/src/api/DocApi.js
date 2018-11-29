@@ -5,6 +5,7 @@ const token = checkToken;
 
 class DocumentApi {
   static getAllDocuments() {
+    console.log('here api')
     return request
       .get('/api/documents')
       .set('x-access-token', token)

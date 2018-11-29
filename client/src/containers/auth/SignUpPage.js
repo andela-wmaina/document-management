@@ -41,12 +41,14 @@ class SignUpPage extends React.Component {
 
   submitUser(event) {
     event.preventDefault();
-    this.props.actions.registerUser(this.state.user)
+    const {actions, history} = this.props;
+
+    actions.registerUser(this.state.user)
       .then(res => {
         if (res.message) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('userDetails', res.userDetails.id);
-          this.props.history.push('/docs');
+          history.push('/docs');
         }
       })
       .catch(error => {

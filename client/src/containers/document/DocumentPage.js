@@ -93,6 +93,8 @@ class DocumentPage extends React.Component {
         }}
       />,
     ];
+    console.log(this.props, 'prop')
+    
     return (
       <div>
         <div style={{ marginTop: 10, marginLeft: 1380 }}>
