@@ -8,7 +8,8 @@ import * as AuthActions from '../../actions/AuthActions';
 import Header from '../../components/common/Header';
 
 const style = {
-  marginRight: 20,
+  marginLeft: 550,
+  marginTop: 70,
 };
 
 class LoginPage extends React.Component {
@@ -54,9 +55,8 @@ class LoginPage extends React.Component {
   }
 
   render() {
-    console.log(this.props, 'props')
     return (
-      <div style={{ marginLeft: 550, marginTop: 70 }}>
+      <div style={style}>
         <LoginForm
           onSubmit={this.submitUser}
           onChange={this.changeUser}

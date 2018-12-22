@@ -30,7 +30,7 @@ class SignUpPage extends React.Component {
     };
   }
 
-  changeUser(event) {
+  changeUser = (event) => {
     const field = event.target.name;
     const user = this.state.user;
     user[field] = event.target.value;
@@ -39,13 +39,13 @@ class SignUpPage extends React.Component {
     });
   }
 
-  submitUser(event) {
+  submitUser = (event) => {
     event.preventDefault();
     const {actions, history} = this.props;
 
     actions.registerUser(this.state.user)
       .then(res => {
-        if (res.message) {
+        if (res && res.message) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('userDetails', res.userDetails.id);
           history.push('/docs');
