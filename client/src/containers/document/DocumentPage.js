@@ -30,47 +30,39 @@ class DocumentPage extends React.Component {
       },
       search: ''
     };
-
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.saveDoc = this.saveDoc.bind(this);
-    this.updateDocState = this.updateDocState.bind(this);
-    this.handleNewRequest = this.handleNewRequest.bind(this);
-    this.handleUpdateInput = this.handleUpdateInput.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
   }
 
-  handleOpen() {
+  handleOpen = () =>  {
     this.setState({ open: true });
   }
 
-  handleClose() {
+  handleClose = () => {
     this.setState({ open: false });
   }
 
-  updateDocState(event) {
+  updateDocState = (event) => {
     const field = event.target.name;
     const document = this.state.doc;
     document[field] = event.target.value;
     return this.setState({ doc: document });
   }
 
-  saveDoc(event) {
+  saveDoc = (event) => {
     this.props.actions.addDocuments(this.state.doc);
     this.props.actions.loadDocuments();
   }
 
-  handleSearch(event) {
+  handleSearch = (event) => {
     this.props.actions.searchDocuments(this.state.search);
   }
 
-  handleUpdateInput(event) {
+  handleUpdateInput = (event) => {
     this.setState({
       search: event
     });
   }
 
-  handleNewRequest() {
+  handleNewRequest = () => {
     this.setState({
       search: '',
     });
@@ -93,8 +85,7 @@ class DocumentPage extends React.Component {
         }}
       />,
     ];
-    console.log(this.props, 'prop')
-    
+
     return (
       <div>
         <div style={{ marginTop: 10, marginLeft: 1380 }}>
@@ -145,8 +136,7 @@ class DocumentPage extends React.Component {
           </div>
           <div
             className="col-md-8"
-            style={{ marginLeft: 380, marginRight: 40, marginTop: 0, height: 0 }}
-          >
+            style={{ marginLeft: 380, marginRight: 40, marginTop: 0, height: 0 }}>
             {this.props.children}
           </div>
         </div>

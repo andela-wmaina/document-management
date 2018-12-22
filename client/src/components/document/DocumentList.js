@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import { Route, Link } from 'react-router';
+import { Route } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { Card, CardActions, CardHeader, CardTitle, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
@@ -32,12 +33,7 @@ const styles = {
 };
 
 class DocumentList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleDelete = this.handleDelete.bind(this);
-  }
-
-  handleDelete(id) {
+  handleDelete = (id) => {
     this.props.actions.deleteDocuments(id);
     this.setState({ open: false });
   }
@@ -56,39 +52,41 @@ class DocumentList extends React.Component {
         onClick={this.props.handleClose}
       />,
     ];
-    console.log(this.props)
 
     return (
       <div>
         {
           this.props.docs.length ?
-            (
-              <ul style={styles.root}>{this.props.docs.map(doc =>
-                <GridList
-                  cellHeight={180}
-                  style={styles.gridList}
-                  key={doc.id}>
-                  <Card style={styles.gridWidth}>
-                    <CardHeader title={doc.owner} />
-                    <CardTitle title={doc.title} style={{ textAlign: 'center' }} />
-                    <CardText>
-                      {doc.content}
-                    </CardText>
-                    <CardActions>
-                      <div>
-                        <Link to={`docs/${doc.id}`}>
-                          EDIT
-                        </Link>
-                        <FlatButton label="DELETE" onClick={() => this.handleDelete(doc.id)} />
-                      </div>
-                    </CardActions>
-                  </Card>
-                </GridList>
-              )}
+          (
+              <ul style={styles.root}>
+                {
+                  this.props.docs.map(doc =>
+                    <GridList
+                      cellHeight={180}
+                      style={styles.gridList}
+                      key={doc.id}>
+                      <Card style={styles.gridWidth}>
+                        <CardTitle title={doc.title} style={{ textAlign: 'center' }} />
+                        <CardText>
+                          {doc.content}
+                        </CardText>
+                        <CardActions>
+                          <div>
+                            <Link to={`docs/${doc.id}`}>
+                              EDIT
+                            </Link>
+                            <FlatButton label="DELETE" onClick={() => this.handleDelete(doc.id)} />
+                          </div>
+                        </CardActions>
+                      </Card>
+                    </GridList>
+                  )
+                }
             </ul>
-          ) : (
-            <div style={styles.spinner} >
-              <CircularProgress />
+          ) :
+          (
+            <div>
+              No Documents
             </div>
           )
         }
