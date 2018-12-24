@@ -32,6 +32,10 @@ class DocumentPage extends React.Component {
     };
   }
 
+  componentWillMount() {
+    this.props.actions.loadDocuments();
+  }
+
   handleOpen = () =>  {
     this.setState({ open: true });
   }
@@ -57,15 +61,11 @@ class DocumentPage extends React.Component {
   }
 
   handleUpdateInput = (event) => {
-    this.setState({
-      search: event
-    });
+    this.setState({search: event});
   }
 
   handleNewRequest = () => {
-    this.setState({
-      search: '',
-    });
+    this.setState({search: ''});
   }
 
   render() {
@@ -98,8 +98,7 @@ class DocumentPage extends React.Component {
               actions={actions}
               modal={false}
               open={this.state.open}
-              onRequestClose={this.handleClose}
-            >
+              onRequestClose={this.handleClose}>
               <AddDocument
                 doc={this.state.doc}
                 onSave={this.saveDoc}

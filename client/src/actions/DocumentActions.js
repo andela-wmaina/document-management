@@ -56,7 +56,9 @@ export function updateDocuments(doc) {
 export function deleteDocuments(id) {
   return function (dispatch) {
     return DocumentApi.deleteDocument(id).then(document => {
-      dispatch(deleteDocsSuccess(document));
+      if (document.message === 'Document successfully deleted') {
+        dispatch(deleteDocsSuccess(id))  
+      }
     }).catch(error => {
       throw (error);
     });
