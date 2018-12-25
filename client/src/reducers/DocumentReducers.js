@@ -3,16 +3,31 @@ import InitialState from './InitialState';
 
 export default function DocumentReducer(state = InitialState.docs, action) {
   switch (action.type) {
+    case types.REQUEST_DOC_SUCCESS:
+      return Object.assign({}, state, {
+        isFetching: true,
+      });
     case types.LOAD_DOC_SUCCESS:
-      return action.documents;
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: action.documents,
+      });
     case types.CREATE_DOC_SUCCESS:
-      return Object.assign({}, action.documents);
+      return Object.assign({}, {
+        items: state.items
+      });
     case types.UPDATE_DOC_SUCCESS:
-      return Object.assign({}, action.documents);
+      return Object.assign({}, {
+        items: action.documents
+      });
     case types.DELETE_DOC_SUCCESS:
-      return state.filter(document => document.id !== action.documents)
+      return Object.assign({}, state, {
+        items: state.items.filter(document => document.id !== action.documents)
+      });
     case types.SEARCH_DOC_SUCCESS:
-      return action.documents;
+      return Object.assign({}, state, {
+        items: action.documents
+      });
     default:
       return state;
   }

@@ -21,7 +21,6 @@ class Header extends React.Component {
   }
 
   render() {
-    console.log('here')
     return (
       <AppBar
         title="Doc Manage"

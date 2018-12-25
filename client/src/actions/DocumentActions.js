@@ -3,6 +3,10 @@
 import * as types from './ActionTypes';
 import DocumentApi from '../api/DocApi';
 
+function requestDocsSuccess() {
+  return { type: types.REQUEST_DOC_SUCCESS };
+}
+
 function loadDocsSuccess(documents) {
   return { type: types.LOAD_DOC_SUCCESS, documents };
 }
@@ -25,6 +29,7 @@ function searchDocSuccess(documents) {
 
 export function loadDocuments() {
   return dispatch => {
+    dispatch(requestDocsSuccess())
     return DocumentApi.getAllDocuments().then(documents => {
       dispatch(loadDocsSuccess(documents));
     }).catch(error => {
@@ -35,6 +40,7 @@ export function loadDocuments() {
 
 export function addDocuments(doc) {
   return function (dispatch) {
+    dispatch(requestDocsSuccess())
     return DocumentApi.addDocument(doc).then(documents => {
       dispatch(createDocsSuccess(documents));
     }).catch(error => {
@@ -57,7 +63,7 @@ export function deleteDocuments(id) {
   return function (dispatch) {
     return DocumentApi.deleteDocument(id).then(document => {
       if (document.message === 'Document successfully deleted') {
-        dispatch(deleteDocsSuccess(id))  
+        dispatch(deleteDocsSuccess(id));
       }
     }).catch(error => {
       throw (error);

@@ -23,7 +23,7 @@ class DocumentPage extends React.Component {
 
     this.state = {
       open: false,
-      doc: {
+      item: {
         title: '',
         content: '',
         access: ''
@@ -46,14 +46,13 @@ class DocumentPage extends React.Component {
 
   updateDocState = (event) => {
     const field = event.target.name;
-    const document = this.state.doc;
+    const document = this.state.item;
     document[field] = event.target.value;
-    return this.setState({ doc: document });
+    return this.setState({ item: document });
   }
 
   saveDoc = (event) => {
-    this.props.actions.addDocuments(this.state.doc);
-    this.props.actions.loadDocuments();
+    this.props.actions.addDocuments(this.state.item);
   }
 
   handleSearch = (event) => {
@@ -100,7 +99,7 @@ class DocumentPage extends React.Component {
               open={this.state.open}
               onRequestClose={this.handleClose}>
               <AddDocument
-                doc={this.state.doc}
+                doc={this.state.item}
                 onSave={this.saveDoc}
                 onChange={this.updateDocState}
               />
@@ -113,7 +112,7 @@ class DocumentPage extends React.Component {
             searchText={this.state.search}
             onUpdateInput={this.handleUpdateInput}
             onNewRequest={this.handleNewRequest}
-            dataSource={this.props.docs}
+            dataSource={this.props.items}
             openOnFocus
           />
           <FlatButton
@@ -124,13 +123,14 @@ class DocumentPage extends React.Component {
         <div className="col-md-12" style={{ height: 0 }}>
           <div className="col-md-3" style={{ display: 'inline', height: 0 }}>
             <DocumentList
-              docs={this.props.docs}
-              handleOpen={this.handleOpen}
-              handleClose={this.handleClose}
-              open={this.state.open}
-              onUpdate={this.onUpdate}
-              onChange={this.updateDocState}
               actions={this.props.actions}
+              docs={this.props.items}
+              handleClose={this.handleClose}
+              handleOpen={this.handleOpen}
+              isFetching={this.props.isFetching}
+              onChange={this.updateDocState}
+              onUpdate={this.onUpdate}
+              open={this.state.open}
             />
           </div>
           <div
@@ -145,19 +145,17 @@ class DocumentPage extends React.Component {
 }
 
 DocumentPage.propTypes = {
-  docs: PropTypes.array.isRequired,
+  actions: PropTypes.object.isRequired,
   children: PropTypes.object,
-  actions: PropTypes.object.isRequired
+  isFetching: PropTypes.bool,
+  items: PropTypes.array.isRequired,
 };
 
 function mapStateToProps(state) {
-  if (state.docs.length > 0) {
-    return {
-      docs: state.docs
-    };
-  }
+  console.log(state, 'state')
   return {
-    docs: []
+    items: state.docs.items || [],
+    isFetching: state.docs.isFetching,
   };
 }
 
