@@ -14,7 +14,7 @@ export default function DocumentReducer(state = InitialState.docs, action) {
       });
     case types.CREATE_DOC_SUCCESS:
       return Object.assign({}, {
-        items: state.items
+        items: [...state.items, action.documents.document]
       });
     case types.UPDATE_DOC_SUCCESS:
       return Object.assign({}, {

@@ -26,7 +26,6 @@ class DocumentController {
         userId: req.user.id
       })
       .then((document) => {
-        console.log(document)
         res.status(200).json({
           message: 'You have successfuly created a document',
           document
@@ -43,7 +42,6 @@ class DocumentController {
    * @return { object } - A response to the user
  */
   list(req, res) {
-    const myDocs = req.data;
     if (req.query.limit || req.query.offset) {
       return Document
         .findAll({
@@ -68,10 +66,7 @@ class DocumentController {
           access: 'public'
         }
       })
-      .then(document => {
-        myDocs.map(doc => document.push(doc));
-        res.status(200).json(document);
-      })
+      .then(document => res.status(200).json(document))
       .catch(error => res.status(400).json(error));
   }
 

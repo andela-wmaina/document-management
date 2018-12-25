@@ -152,7 +152,6 @@ DocumentPage.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log(state, 'state')
   return {
     items: state.docs.items || [],
     isFetching: state.docs.isFetching,
