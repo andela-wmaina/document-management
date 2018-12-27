@@ -43,6 +43,7 @@ class LoginPage extends React.Component {
 
     actions.loginUser(this.state.user)
       .then(res => {
+        console.log(res, 'res')
         if (res.message) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('userDetails', res.user.id);

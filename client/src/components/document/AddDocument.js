@@ -3,10 +3,19 @@ import PropTypes from 'prop-types';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+
+
 const style = {
   margin: 12,
 };
 class AddDocument extends React.Component {
+  state = {
+    access: false,
+  };
+
   render() {
     return (
       <div>
@@ -27,23 +36,19 @@ class AddDocument extends React.Component {
             multiLine={true}
             fullWidth={true}
           />
-          <br />
-          <TextField
-            type="text"
-            name="access"
-            label="Access"
-            onChange={this.props.onChange}
-            fullWidth={true}
-          />
-          <br />
-          <RaisedButton
-            primary={true}
-            style={style}
-            type="submit"
-            label="Submit"
-            disabled={this.props.saving}
-            className="btn btn-primary"
-            onClick={this.props.onSave}
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.access}
+                onChange={(e) => {
+                  this.setState({access: !this.state.access});
+                  this.props.onChange(e);
+                }}
+                name="access"
+                value={this.state.access}
+              />
+            }
+            label="Public"
           />
         </form>
       </div>

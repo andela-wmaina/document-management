@@ -33,6 +33,7 @@ class DocumentPage extends React.Component {
   }
 
   componentWillMount() {
+    console.log(localStorage.getItem('token'), 'tok')
     this.props.actions.loadDocuments();
   }
 
@@ -93,7 +94,7 @@ class DocumentPage extends React.Component {
               <ContentAdd />
             </FloatingActionButton>
             <Dialog
-              title="Add document"
+              title="Add Document"
               actions={actions}
               modal={false}
               open={this.state.open}

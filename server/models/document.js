@@ -11,8 +11,8 @@ module.exports = (Sequelize, DataTypes) => {
     access: {
       type: DataTypes.STRING,
       required: true,
-      default: 'private',
-      enum: ['private', 'public']
+      default: 'false',
+      enum: ['true', 'false']
     }
   }, {
     classMethods: {

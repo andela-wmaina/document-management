@@ -22,7 +22,7 @@ class DocumentController {
       .create({
         title: req.body.title,
         content: req.body.content,
-        access: req.body.access || 'private',
+        access: req.body.access || 'false',
         userId: req.user.id
       })
       .then((document) => {
@@ -60,10 +60,11 @@ class DocumentController {
           res.status(400).json(error);
         });
     }
+    console.log(req, 'req')
     return Document
       .findAll({
         where: {
-          access: 'public'
+          access: 'true'
         }
       })
       .then(document => res.status(200).json(document))

@@ -4,7 +4,7 @@ module.exports = {
       {
         title: 'The art of being',
         content: 'A person who has not been completely alienated',
-        access: 'public',
+        access: 'true',
         userId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -12,7 +12,7 @@ module.exports = {
       {
         title: 'Knowledge',
         content: 'There is no wealth like knowledge, and no poverty like ignorance. - Buddha',
-        access: 'public',
+        access: 'true',
         userId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -20,7 +20,7 @@ module.exports = {
       {
         title: 'Song List',
         content: "I'm Yours - Jason Marz, The Man Who Can't Be Moved - The Script, Too Lost In You - Sugababes",
-        access: 'private',
+        access: 'false',
         userId: 2,
         createdAt: new Date(),
         updatedAt: new Date()

@@ -1,18 +1,20 @@
 import request from 'superagent';
 
-const checkToken = localStorage.getItem('token');
-const token = checkToken;
-
 class DocumentApi {
   static getAllDocuments() {
+    const token = localStorage.getItem('token');
     return request
       .get('/api/documents')
       .set('x-access-token', token)
-      .then(response => response.body)
+      .then(response => {
+        console.log(localStorage.getItem('token'), 'token')
+        response.body
+      })
       .catch(error => console.log(error));
   }
 
   static addDocument(doc) {
+    const token = localStorage.getItem('token');
     return request
       .post('/api/documents')
       .set('x-access-token', token)
@@ -26,6 +28,7 @@ class DocumentApi {
   }
 
   static updateDocument(doc) {
+    const token = localStorage.getItem('token');
     return request
       .put(`/api/documents/${doc.id}`)
       .set('x-access-token', token)
@@ -39,6 +42,7 @@ class DocumentApi {
   }
 
   static deleteDocument(id) {
+    const token = localStorage.getItem('token');
     return request
       .delete(`/api/documents/${id}`)
       .set('x-access-token', token)
@@ -47,6 +51,7 @@ class DocumentApi {
   }
 
   static searchDocument(title) {
+    const token = localStorage.getItem('token');
     return request
       .get(`/api/search/documents?title=${title}`)
       .set('x-access-token', token)

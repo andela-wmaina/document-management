@@ -31,7 +31,6 @@ export function loadDocuments() {
   return dispatch => {
     dispatch(requestDocsSuccess())
     return DocumentApi.getAllDocuments().then(documents => {
-      console.log(documents, 'documents')
       dispatch(loadDocsSuccess(documents));
     }).catch(error => {
       throw (error);

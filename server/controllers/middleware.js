@@ -132,6 +132,7 @@ class MiddlewareController {
     * @return {void}
   */
   checkUser(req, res, next) {
+    console.log(req.user.roleId, 'user')
     if (req.user.roleId === 2) {
       return Document
         .findAll({
@@ -150,7 +151,7 @@ class MiddlewareController {
     return Document
       .findAll({
         where: {
-          access: 'private'
+          access: 'false'
         }
       })
       .then((docs) => {
